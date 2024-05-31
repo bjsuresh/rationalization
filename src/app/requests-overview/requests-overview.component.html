@@ -1,0 +1,658 @@
+
+<mat-tab-group mat-stretch-tabs="true" #tabGroup fitInkBarToContent animationDuration="0ms"  (selectedIndexChange)="onTabChange($event)">
+    <mat-tab label="Change Request Details">
+
+    <div class="btn_grp">
+        <button mat-button mat-raised-button color="primary" (click)="addChangeRequest()" style="margin-right: 10px;">Add Change Request</button>
+        <!-- <button mat-button mat-raised-button color="primary" (click)="importChangeRequest()">Import Change Request</button> -->
+    </div>
+          
+    <dx-data-grid
+    id="gridContainer"
+    [dataSource]="change_requests"
+    [showBorders]="true"
+    (onExporting)="exportCR($event)"
+    [allowColumnReordering]="true"
+    [columnAutoWidth]="true"
+    [columnMinWidth]="20"
+    [allowColumnResizing]="true"
+    [customizeColumns]="customizeColumns"
+    (onCellClick)="onCellClick($event)"
+    >
+    <dxo-templates>
+        <div *dxTemplate="let data of 'approve'">
+            <mat-icon>check_circle</mat-icon>
+        </div>
+        <div *dxTemplate="let data of 'disapprove'">
+            <mat-icon>cancel</mat-icon>
+        </div>
+        <div *dxTemplate="let data of 'view'">
+            <mat-icon>visibility</mat-icon>
+        </div>
+      </dxo-templates>
+
+    <dxi-column dataField="DynamicDocName" caption="Dynamic Doc Name" dataType="string" ></dxi-column>
+    <dxi-column dataField="ProcessModeName" caption="ProcessModeName" dataType="string" ></dxi-column>
+    <dxi-column dataField="TagName" caption="Tag Name" dataType="string" ></dxi-column>
+    <dxi-column dataField="TagAlias" caption="Tag Alias" dataType="string" ></dxi-column>
+    <dxi-column dataField="Approved" caption="Approved" dataType="boolean" ></dxi-column>
+    <dxi-column dataField="Disapproved" caption="Disapproved" dataType="boolean" ></dxi-column>
+    <dxi-column dataField="CurrentValue" caption="Current Value" dataType="string" ></dxi-column>
+    <dxi-column dataField="ProposedValue" caption="Proposed Value" dataType="string" ></dxi-column>
+    
+
+    <!-- <dxi-column type="buttons">
+    <dxi-button
+        text="View Detail" [onClick]="viewDetails">
+    </dxi-button>
+    <dxi-button
+        text="Approve"  [visible]="isApprove" [onClick]="approveT">
+    </dxi-button>
+    <dxi-button
+        text="Disapprove"  [visible]="isApprove" [onClick]="disAppT">
+    </dxi-button>
+    </dxi-column> -->
+    
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    </dx-data-grid>
+
+    </mat-tab>
+
+    <mat-tab label="Waiting For Approval Tags">
+        <mat-dialog-content class="mat-typography">
+
+            <dx-data-grid
+            id="gridContainer"
+            [dataSource]="pending_tags"
+            [showBorders]="true"
+            [allowColumnReordering]="true"
+            [columnAutoWidth]="true"
+            [columnMinWidth]="20"
+            [allowColumnResizing]="true"
+            (onExporting)="exportPendingRequest($event)"
+            [customizeColumns]="customizePTColumns"
+
+            >
+            <dxi-column dataField="RequestDate" caption="RequestDate" dataType="string" ></dxi-column>
+            <dxi-column dataField="ProcessModeName" caption="ProcessMode Name" dataType="string" ></dxi-column>
+            <dxi-column dataField="TagName" caption="Tag Name" dataType="string" ></dxi-column>
+            <dxi-column dataField="TagAlias" caption="Tag Alias" dataType="string" ></dxi-column>
+            <dxi-column dataField="CurrentValue" caption="CurrentValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="ProposedValue" caption="ProposedValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="ProposeRemarks" caption="ProposeRemarks" dataType="string" ></dxi-column>
+            <dxi-column dataField="MinValue" caption="MinValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="MaxValue" caption="MaxValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="Opctag" caption="OPC Tag" dataType="string" ></dxi-column>
+            <dxi-column dataField="Approved" caption="Approved" dataType="boolean" ></dxi-column>
+            <dxi-column dataField="Disapproved" caption="Disapproved" dataType="boolean" ></dxi-column>
+            <dxi-column dataField="Unit" caption="Unit" dataType="string" ></dxi-column>
+            <dxi-column dataField="Area" caption="Area" dataType="string" ></dxi-column>
+            <dxi-column dataField="Plant" caption="Plant" dataType="string" ></dxi-column>
+            
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            </dx-data-grid>
+        
+        </mat-dialog-content>
+    
+    </mat-tab>
+    <mat-tab label="Approved Tags">
+        <mat-dialog-content class="mat-typography">
+
+            <dx-data-grid
+            id="gridContainer"
+            [dataSource]="app_tags"
+            [showBorders]="true"
+            [allowColumnReordering]="true"
+            [columnAutoWidth]="true"
+            [columnMinWidth]="20"
+            [allowColumnResizing]="true"
+            (onExporting)="exportApproveReq($event)"
+            [customizeColumns]="customizeAppTColumns"
+
+            >
+            <dxi-column dataField="RequestDate" caption="RequestDate" dataType="string" ></dxi-column>
+            <dxi-column dataField="ApprovedDateTime" caption="ApprovedDateTime" dataType="string" ></dxi-column>
+            <dxi-column dataField="ProcessModeName" caption="ProcessMode Name" dataType="string" ></dxi-column>
+            <dxi-column dataField="TagName" caption="Tag Name" dataType="string" ></dxi-column>
+            <dxi-column dataField="TagAlias" caption="Tag Alias" dataType="string" ></dxi-column>
+            <dxi-column dataField="CurrentValue" caption="CurrentValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="ProposedValue" caption="ProposedValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="ProposeRemarks" caption="ProposeRemarks" dataType="string" ></dxi-column>
+            <dxi-column dataField="MinValue" caption="MinValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="MaxValue" caption="MaxValue" dataType="number" ></dxi-column>
+            <dxi-column dataField="Opctag" caption="OPC Tag" dataType="string" ></dxi-column>
+            <dxi-column dataField="Approved" caption="Approved" dataType="boolean" ></dxi-column>
+            <dxi-column dataField="Disapproved" caption="Disapproved" dataType="boolean" ></dxi-column>
+            <dxi-column dataField="ApprovedUser" caption="ApprovedUser" dataType="string" ></dxi-column>
+            <dxi-column dataField="ProposedUser" caption="Proposed User" dataType="string" ></dxi-column>
+
+            <dxi-column dataField="Unit" caption="Unit" dataType="string" ></dxi-column>
+            <dxi-column dataField="Area" caption="Area" dataType="string" ></dxi-column>
+            <dxi-column dataField="Plant" caption="Plant" dataType="string" ></dxi-column>
+
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            </dx-data-grid>
+        
+        </mat-dialog-content>
+    </mat-tab>
+    <mat-tab label="Dis Approved Tags">
+            <mat-dialog-content class="mat-typography">
+            <dx-data-grid
+            id="gridContainer"
+            [dataSource]="disapp_tags"
+            [showBorders]="true"
+            [allowColumnReordering]="true"
+            [columnAutoWidth]="true"
+            [columnMinWidth]="20"
+            [allowColumnResizing]="true"
+            (onExporting)="exportDisApproveReq($event)"
+    [customizeColumns]="customizeDisAppTColumns"
+            
+            >
+            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            </dx-data-grid>         
+            </mat-dialog-content>
+    </mat-tab>
+    <mat-tab label="Add Change Request" *ngIf="showAddChangeRequestTab">
+        <div class="req_body_form" [formGroup]="RequestGroup">
+          <table style="height: 100%; width: 100%;">
+              <tr>
+                  <td style="vertical-align: top;">
+                      <table class="dx-fieldset">
+                      <!-- <tr>
+                          <td>S No</td>
+                          <td><dx-text-box [inputAttr]="{ 'aria-label': 'No' }" formControlName="nottification_no"></dx-text-box></td>
+                      </tr> -->
+                      <tr>
+                          <td colspan="1">Plant</td>
+                          <td colspan="5">
+                            <dx-select-box [items]="plants" (onValueChanged)="onPlantValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="plant"></dx-select-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('plant')?.hasError('required')">Plant is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="1">Process Mode</td>
+                        <td colspan="5">
+                            <dx-select-box [items]="processmodes" (onValueChanged)="onPMValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="processmode"></dx-select-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('processmode')?.hasError('required')">Process Mode is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <tr>
+                          <td colspan="1">Tag name</td>
+                          <td colspan="5">
+                            <dx-select-box [items]="tagnames" (onValueChanged)="onTagValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="tagname"></dx-select-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('tagname')?.hasError('required')">Tag Name is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <!-- <tr>
+                          <td>Tag type</td>
+                          <td><dx-select-box [items]="tagtypes" [inputAttr]="{ 'aria-label': '' }"></dx-select-box></td>
+                      </tr> -->
+                      <tr>
+                          <td colspan="1">Alarm type / Configuration parameter</td>
+                          <td colspan="5"><dx-select-box [items]="params" [inputAttr]="{ 'aria-label': 'Alrm type' }" (onValueChanged)="onParamValChanged($event)"  formControlName="alrmtype "></dx-select-box></td>
+                      </tr>
+                      <tr>
+                        <td colspan="1">Tag Description</td>
+                        <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Tag Description' }" formControlName="tagdesc"></dx-text-box></td>
+                        </tr>
+                      <tr>
+                          <td colspan="1">Existing alarm set point / Configuration parameter</td>
+                          <td colspan="5">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'Currentval' }"  formControlName="currentval"></dx-text-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('currentval')?.hasError('required')">Current value is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <tr>
+                          <td colspan="1">Proposed alarm set point / Configuration parameter</td>
+                          <td colspan="5">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'Proposed val' }"  formControlName="proposedvalue"></dx-text-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('proposedvalue')?.hasError('required')">Proposed value is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <tr>
+                          <td colspan="1">Reason for change (Add additional page if required)</td>
+                          <td colspan="5">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'Reason' }"  formControlName="reason"></dx-text-box>
+                            <!-- <mat-error *ngIf="RequestGroup.get('reason')?.hasError('required')">Reason is required</mat-error> -->
+                        </td>
+                      </tr>
+                      <tr>
+                          <td colspan="1">Mention Safe Operating Limit (Safe operating range with ref document no.)</td>
+                          <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Min/Max Value' }"  formControlName="min_max_val"></dx-text-box></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td> 
+                            <h5>Initiated by</h5>
+                        </td>
+                        <td colspan="4">
+                            <h5>Approved by</h5>
+                        </td>
+                      </tr>    
+                    <tr>
+                        <td>Signature</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Department</td>
+                        <td></td>
+                        <td>Instrument</td>
+                        <td>Operations</td>
+                        <td>TS</td>
+                        <td>Reliability</td>
+                    </tr>
+                    <tr>
+                        <td>Designation</td>
+                        <td>Engg./AM/DM</td>
+                        <td colspan="3">Manager/AGM</td>
+                        <td>AGM</td>
+                    </tr>
+
+                      </table>
+                  </td>
+              </tr>
+          </table>
+          <div class="save_btn">
+            <button mat-button mat-raised-button color="primary" (click)="addNewChangeRequest()">Save</button>
+          </div>
+          
+          </div>          
+    </mat-tab>
+</mat-tab-group>
+
+<dx-popup 
+[(visible)]="isConfirmApproveModal"
+[title]="''"
+[width]="400"
+[height]="170"
+[dragEnabled]="true"
+[closeOnOutsideClick]="true">
+<div>
+  <div class="">Are you sure you want to Approve this Tag ?</div>
+  
+  <div class="modal_btn">
+      <button mat-button mat-raised-button color="primary"(click)="approve()">Yes</button>
+      <button mat-raised-button (click)="closeModal()" color="primary">No</button>
+  </div>
+</div>
+    
+</dx-popup>
+
+<dx-popup 
+[(visible)]="isConfirmDisApproveModal"
+[title]="''"
+[width]="400"
+[height]="170"
+[dragEnabled]="true"
+[closeOnOutsideClick]="true">
+<div>
+  <div class="">Are you sure you want to Dis Approve this Tag ?</div>
+  <div class="dx-field">
+    <div class="dx-field-label">Remarks</div>
+    <div class="dx-field-value">
+    <dx-text-box [value]="remarks"
+        [inputAttr]="{ 'aria-label': 'Simple Product' }"
+    ></dx-text-box>
+    </div>
+</div>
+
+  <div class="modal_btn">
+      <button mat-button mat-raised-button color="primary"(click)="disApprove()">Yes</button>
+      <button mat-raised-button (click)="closeModal()" color="primary">No</button>
+  </div>
+</div>
+    
+</dx-popup>
+
+<dx-popup 
+[(visible)]="isOpenViewModal"
+[title]="'View Form'"
+[width]="1000"
+[height]="550"
+[dragEnabled]="true"
+[closeOnOutsideClick]="true">
+<div>
+    <div class="view_from" [formGroup]="RequestGroup">
+        <table style="height: 100%; width: 100%;">
+            <tr>
+                <td style="vertical-align: top;">
+                    <table class="dx-fieldset">
+                    <!-- <tr>
+                        <td>S No</td>
+                        <td><dx-text-box [inputAttr]="{ 'aria-label': 'No' }" formControlName="nottification_no"></dx-text-box></td>
+                    </tr> -->
+                    <tr>
+                        <td colspan="1">Plant</td>
+                        <td colspan="5">
+                          <dx-select-box [items]="plants" (onValueChanged)="onPlantValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="plant"></dx-select-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('plant')?.hasError('required')">Plant is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="1">Process Mode</td>
+                      <td colspan="5">
+                          <dx-select-box [items]="processmodes" (onValueChanged)="onPMValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="processmode"></dx-select-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('processmode')?.hasError('required')">Process Mode is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Tag name</td>
+                        <td colspan="5">
+                          <dx-select-box [items]="tagnames" (onValueChanged)="onTagValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="tagname"></dx-select-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('tagname')?.hasError('required')">Tag Name is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>Tag type</td>
+                        <td><dx-select-box [items]="tagtypes" [inputAttr]="{ 'aria-label': '' }"></dx-select-box></td>
+                    </tr> -->
+                    <tr>
+                        <td colspan="1">Alarm type / Configuration parameter</td>
+                        <td colspan="5"><dx-select-box [items]="params" [inputAttr]="{ 'aria-label': 'Alrm type' }" (onValueChanged)="onParamValChanged($event)"  formControlName="alrmtype"></dx-select-box></td>
+                    </tr>
+                    <tr>
+                      <td colspan="1">Tag Description</td>
+                      <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Tag Description' }" formControlName="tagdesc"></dx-text-box></td>
+                      </tr>
+                    <tr>
+                        <td colspan="1">Existing alarm set point / Configuration parameter</td>
+                        <td colspan="5">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'Currentval' }"  formControlName="currentval"></dx-text-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('currentval')?.hasError('required')">Current value is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Proposed alarm set point / Configuration parameter</td>
+                        <td colspan="5">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'Proposed val' }"  formControlName="proposedvalue"></dx-text-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('proposedvalue')?.hasError('required')">Proposed value is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Reason for change (Add additional page if required)</td>
+                        <td colspan="5">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'Reason' }"  formControlName="reason"></dx-text-box>
+                          <!-- <mat-error *ngIf="RequestGroup.get('reason')?.hasError('required')">Reason is required</mat-error> -->
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Mention Safe Operating Limit (Safe operating range with ref document no.)</td>
+                        <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Min/Max Value' }"  formControlName="min_max_val"></dx-text-box></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td> 
+                          <h5>Initiated by</h5>
+                      </td>
+                      <td colspan="4">
+                          <h5>Approved by</h5>
+                      </td>
+                    </tr>    
+                  <tr>
+                      <td>Datetime</td>
+                      <td>{{RequestDate}}</td>
+                      <td>{{ApprovedDateTime}}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Name</td>
+                      <td>{{ProposedUser}}</td>
+                      <td>{{ApprovedUser}}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Department</td>
+                      <td></td>
+                      <td>Instrument</td>
+                      <td>Operations</td>
+                      <td>TS</td>
+                      <td>Reliability</td>
+                  </tr>
+                  <tr>
+                      <td>Designation</td>
+                      <td>Engg./AM/DM</td>
+                      <td colspan="3">Manager/AGM</td>
+                      <td>AGM</td>
+                  </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        </div>          
+
+</div>
+    
+</dx-popup>
+
+<!-- <dx-popup 
+[(visible)]="isOpenPopup"
+[title]="'Add Change Request'"
+[width]="650"
+height="100%"
+[dragEnabled]="true"
+[closeOnOutsideClick]="true">
+<div>
+  <div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Change Request Name</div>
+        <div class="dx-field-value">
+        <dx-text-box
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-text-box>
+        </div>
+    </div>
+
+    <div class="dx-field">
+        <div class="dx-field-label">Tag Name</div>
+        <div class="dx-field-value">
+        <dx-select-box
+            [items]="tags"
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-select-box>
+        </div>
+    </div>
+
+    <div class="dx-field">
+        <div class="dx-field-label">Parameters</div>
+        <div class="dx-field-value">
+        <dx-select-box
+            [items]="parameters"
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-select-box>
+        </div>
+    </div>
+
+    <div class="dx-field">
+        <div class="dx-field-label">Existing Design Value</div>
+        <div class="dx-field-value">
+        <dx-text-box
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-text-box>
+        </div>
+    </div>
+
+    <div class="dx-field">
+        <div class="dx-field-label">Current OPC Value</div>
+        <div class="dx-field-value">
+        <dx-text-box
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-text-box>
+        </div>
+    </div>
+
+    <div class="dx-field">
+        <div class="dx-field-label">New Value</div>
+        <div class="dx-field-value">
+        <dx-text-box
+            [inputAttr]="{ 'aria-label': '' }"
+        ></dx-text-box>
+        </div>
+    </div>
+
+</div>
+<table style="height: 100%;">
+    <tr>
+        <td style="vertical-align: top;">
+            <table class="dx-fieldset">
+            <tr>
+                <td>SAP Notification No</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Plant</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Tag name</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Tag type</td>
+                <td><dx-select-box [items]="tagtypes" [inputAttr]="{ 'aria-label': '' }"></dx-select-box></td>
+            </tr>
+            <tr>
+                <td>Tag Description</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Alarm type / Configuration parameter</td>
+                <td><dx-select-box [items]="alrm_type" [inputAttr]="{ 'aria-label': '' }"></dx-select-box></td>
+            </tr>
+            <tr>
+                <td>Existing alarm set point / Configuration parameter</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Proposed alarm set point / Configuration parameter</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Reason for change (Add additional page if required)</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            <tr>
+                <td>Mention Safe Operating Limit (Safe operating range with ref document no.)</td>
+                <td><dx-text-box [inputAttr]="{ 'aria-label': '' }"></dx-text-box></td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+            <table class="dx-fieldset">
+                <tr>
+                    <td></td>
+                    <td> 
+                        <h5>Initiated by</h5>
+                    </td>
+                    <td colspan="4">
+                        <h5>Approved by</h5>
+                    </td>
+                  </tr>    
+                <tr>
+                    <td>Signature</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td></td>
+                    <td>Instrument</td>
+                    <td>Operations</td>
+                    <td>TS</td>
+                    <td>Reliability</td>
+                </tr>
+                <tr>
+                    <td>Designation</td>
+                    <td>Engg./AM/DM</td>
+                    <td colspan="3">Manager/AGM</td>
+                    <td>AGM</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<div class="save_btn">
+  <button mat-button mat-raised-button color="primary">Save</button>
+</div>
+
+</div>
+</dx-popup> -->

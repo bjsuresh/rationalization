@@ -1,0 +1,24 @@
+.login-container {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-container .btn-block {
+    width: 100%;
+  }
+.action_btn {
+    justify-content: center;
+}
+.header {
+    justify-content: space-between;
+}
+.comp_info {
+    display: flex;
+}
+/* .logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+} */
+div.logo{text-align: center; margin: 20px 20px 30px 20px; fill: #566375;}

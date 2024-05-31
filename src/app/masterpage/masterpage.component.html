@@ -1,0 +1,444 @@
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectTabIndex">
+  
+    <mat-tab label="Master Data">
+      <div class="grp1">
+          <div class="title">DCS Tags</div>
+          <dx-data-grid
+          id="gridContainer"
+          keyExpr="id"
+          [allowColumnReordering]="true"
+          [allowColumnResizing]="true"
+          [columnAutoWidth]="true"
+          [dataSource]="tagDataSource"
+          [showBorders]="true"                   
+          
+          >
+          <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+          <dxo-filter-builder
+            
+            [allowHierarchicalFields]="true"
+          >
+          </dxo-filter-builder>
+          <dxo-filter-builder-popup [position]="popupPosition">
+          </dxo-filter-builder-popup>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+          <dxo-search-panel [visible]="true"></dxo-search-panel>
+          <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+          <dxo-sorting mode="multiple"></dxo-sorting>
+          <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+          <dxo-paging [pageSize]="10"> </dxo-paging>
+          <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="[5, 10, 'all']"
+              displayMode="full"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+          <!-- <dxi-column dataField="ImpactName" caption="Impact Names" dataType="string" ></dxi-column> -->
+          <!-- <dxi-column dataField="Impact" caption="ImpactName" [fixed]="true"></dxi-column> -->
+          <!-- <dxi-column dataField="severity_severe" caption="Very Large">
+              <dxo-lookup [dataSource]="safetyCons" displayExpr="ConsequenceName" valueExpr="id">
+              </dxo-lookup>
+          </dxi-column> -->
+
+          <dxo-editing
+              mode="row"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            
+          </dxo-editing>
+      
+          </dx-data-grid>    
+      </div>
+      <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectTabIndex">
+        <mat-tab label="Events">
+          <div class="sec2">
+            <div class="example-button-row">
+              <button mat-stroked-button (click)="systemPopup()">Show System</button>
+              <button mat-stroked-button (click)="alarmPopup()" color="primary">Show Alarms</button>
+              <button mat-stroked-button (click)="responsePopup()" color="accent">Operator Response</button>
+              <button mat-stroked-button (click)="alrmReviewsPopup()" color="warn">Alarm Reviews</button>
+              <button mat-stroked-button (click)="changeNotesPopup()" color="warn">Show Change Notes</button>
+            </div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="eventsDataSource"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+                mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true"
+                [useIcons]="true"
+                >
+                <!-- <dxo-form >
+                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
+                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
+                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
+                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
+                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
+                </dxo-form> -->
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+
+          <dx-popup 
+          [(visible)]="isShowSysPopup"
+          [title]="'Systems'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="systems"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowAlrmPopup"
+          [title]="'Alarms'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="alarms"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowOperatorResPopup"
+          [title]="'Operator Responses'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="responses"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowAlrmRevsPopup"
+          [title]="'Alarm Reviews'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="reviews"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowChangeNotesPopup"
+          [title]="'Change Notes'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="notes"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="false"
+              [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+
+        </mat-tab>
+        <mat-tab label="Event Treatments">
+          <div class="sec1">
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="evntTrtsDatasource"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+                mode="row"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true"
+                [useIcons]="true"
+                >
+                <dxo-form >
+                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
+                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
+                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
+                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
+                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
+                </dxo-form>
+            </dxo-editing>          
+            </dx-data-grid>        
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-tab>
+    <mat-tab label="Add Review">
+        <div class="req_body_form" [formGroup]="employee">
+          <table style="height: 100%; width: 100%;">
+              <tr>
+                  <td style="vertical-align: top;">
+                      <table class="dx-fieldset">
+                      <tr rowspan="6">
+                          <td colspan="1">DCS_Tag</td>
+                          <td colspan="2">
+                              <dx-select-box [items]="tagsList" (onValueChanged)="onValChanged($event)" [inputAttr]="{ 'aria-label': 'DCS_Tag' }"  formControlName="DCS_Tag"></dx-select-box>
+                          </td>
+                          <td colspan="1">Event_Type</td>
+                          <td colspan="2">
+                            <!-- <dx-text-box [inputAttr]="{ 'aria-label': 'Event Type' }" formControlName="Event_Type"></dx-text-box> -->
+                            <dx-select-box [items]="parameters"  [inputAttr]="{ 'aria-label': 'Event_Type' }"  formControlName="Event_Type"></dx-select-box>
+                          </td>
+                      </tr>
+                      <tr rowspan="6">
+                          <td colspan="1">PRTENo</td>
+                          <td colspan="2">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'DCS Tag' }" formControlName="DCS_Tag"></dx-text-box>
+                            <!-- <dx-select-box [items]="tagsList" (onValueChanged)="onValChanged($event)" [inputAttr]="{ 'aria-label': 'DCS_Tag' }"  formControlName="DCS_Tag"></dx-select-box> -->
+                          </td>
+                          <td colspan="1">reviewDate</td>
+                          <td colspan="2">
+                            <dx-date-box
+                            type="date" [inputAttr]="{ 'aria-label': 'reviewDate' }" formControlName="reviewDate"></dx-date-box>
+                          </td>
+                      </tr>
+                      <tr rowspan="6">
+                          <td colspan="1">Reviewers</td>
+                          <td colspan="2">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'reviewBy' }" formControlName="reviewBy"></dx-text-box>
+                          </td>
+                          <td colspan="1">Screen</td>
+                          <td colspan="2">
+                              <dx-text-box [inputAttr]="{ 'aria-label': 'Screen' }" formControlName="reviewBy"></dx-text-box>
+                          </td>  
+                      </tr>
+                      <tr rowspan="6">
+                        <td colspan="1">Review Priority</td>
+                        <td colspan="2">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'time' }" formControlName="time"></dx-text-box>
+                        </td>
+                        <td colspan="1">New Treatment</td>
+                        <td colspan="2">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'Effective Response Time' }"  formControlName="EffTime"></dx-text-box>
+                        </td>
+                      </tr>
+                      <tr rowspan="6">
+                          <td colspan="1">Rule Date</td>
+                          <td colspan="2">
+                            <dx-date-box
+                            type="date" [inputAttr]="{ 'aria-label': 'reviewDate' }" formControlName="reviewDate"></dx-date-box>
+                          </td>
+                          <td colspan="1">Rule Applied</td>
+                          <td colspan="2">
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'reviewBy' }" formControlName="reviewBy"></dx-text-box>
+                          </td>
+                      </tr> 
+                      <tr rowspan="6">
+                        <td colspan="1">Comments</td>
+                        <td colspan="5">
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'comments' }"  formControlName="comments"></dx-text-box>
+                        </td>
+                      </tr>
+                      </table>
+                      <div class="save_btn">
+                        <button mat-button mat-raised-button color="primary" (click)="save()">Save</button>
+                      </div>
+                  </td>
+              </tr>
+          </table>
+          
+        </div>          
+      </mat-tab>
+  
+</mat-tab-group>
+<div class="" style="padding: 20px;"></div>

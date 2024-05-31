@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Respond Time</h2>
+
+<dx-data-grid
+id="gridContainer"
+keyExpr="id"
+[dataSource]="dataSource"
+[showBorders]="true"
+(onRowInserted)="addImpact($event)" 
+(onRowUpdating)="updateImpact($event)"
+(onRowRemoving)="deleteImpact($event)"
+
+>
+<dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+<dxo-sorting mode="multiple"></dxo-sorting>
+<dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+<dxo-paging [pageSize]="10"> </dxo-paging>
+<dxo-pager
+    [visible]="true"
+    [allowedPageSizes]="[5, 10, 'all']"
+    displayMode="full"
+    [showPageSizeSelector]="true"
+    [showInfo]="true"
+    [showNavigationButtons]="true"
+>
+</dxo-pager>
+<dxi-column dataField="time" caption="Time" dataType="string" ></dxi-column>
+
+    <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowAdding]="true"
+        [allowDeleting]="true"
+        [useIcons]="true"
+        >
+        <dxo-form >
+            <dxi-item dataField="time" caption="Time" dataType="string" ></dxi-item>
+        </dxo-form>
+        <dxo-popup
+            title="Respond Time"
+            [showTitle]="true"
+            [width]="500"
+            [height]="250"
+        >
+        </dxo-popup>
+        
+    </dxo-editing>
+
+</dx-data-grid>

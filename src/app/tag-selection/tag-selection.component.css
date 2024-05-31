@@ -1,0 +1,21 @@
+:host {
+    display: block;
+    width: calc(100% - 30px);
+  }
+  .filter_sec {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+  }
+  .btn_grp {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0px;
+    align-items: flex-start;
+}
+.btn_grp button {
+    margin-left: 5px;
+}
+.gridTable {
+  margin-bottom: 20px;
+}

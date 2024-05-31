@@ -1,0 +1,302 @@
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab label="Unassigned">
+        <div class="btn_grp">
+            <button mat-button mat-raised-button color="primary" (click)="addDesignValue()" style="margin-right: 10px;">Add Design Value</button>
+            <button mat-button mat-raised-button color="primary" (click)="addChangeRequest()">Import Design Value</button>
+        </div>
+
+        <dx-popup 
+            [(visible)]="isOpenAddDesign"
+            [title]="'Add Design Value'"
+            [width]="500"
+            [height]="380"
+            [dragEnabled]="true"
+            [closeOnOutsideClick]="true">
+            <div [formGroup]="FormGroup">
+                <div class="dx-fieldset">
+                    <div class="dx-field">
+                        <div class="dx-field-label">Process Mode</div>
+                        <div class="dx-field-value">
+                        <dx-select-box
+                            [items]="processModeNames"
+                            [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                            formControlName="procesmodename"
+                            (onValueChanged)="onPMValueChanged($event)"
+                        ></dx-select-box>
+                        </div>
+                    </div>
+                
+                    <div class="dx-field">
+                        <div class="dx-field-label">Tag Name</div>
+                        <div class="dx-field-value">
+                        <dx-select-box
+                            [items]="TagNames"
+                            [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                            formControlName="tagname"
+                            (onValueChanged)="onTagValueChanged($event)"
+                        ></dx-select-box>
+                        </div>
+                    </div>
+                
+                    <div class="dx-field">
+                        <div class="dx-field-label">Parameters</div>
+                        <div class="dx-field-value">
+                        <dx-select-box
+                            [items]="parameters"
+                            [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                            formControlName="paramter"
+                            (onValueChanged)="onTagValueChanged($event)"
+                        ></dx-select-box>
+                        </div>
+                    </div>
+                
+                    <div class="dx-field">
+                        <div class="dx-field-label">Design Value</div>
+                        <div class="dx-field-value">
+                        <dx-text-box formControlName="designVal"
+                            [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                        ></dx-text-box>
+                        </div>
+                    </div>
+                
+                    <div class="modal_btn">
+                        <button mat-button mat-raised-button color="primary"(click)="submit()">Save</button>
+                        <button mat-raised-button (click)="cancel()" color="primary">Cancel</button>
+                    </div>
+                </div>
+                
+            </div>
+        </dx-popup>
+
+        <dx-popup 
+        [(visible)]="isOpenPopup"
+        [title]="'Import Design Value'"
+        [width]="500"
+        [height]="255"
+        [dragEnabled]="true"
+        [closeOnOutsideClick]="true">
+        <div>
+            <mat-dialog-content class="mat-typography">
+                <div class="dx-field">
+                  <div class="dx-field-label">Import file</div>
+                  <div class="dx-field-value">
+                    <div id="fileuploader-container">
+                        <dx-file-uploader
+                          selectButtonText="Select File"
+                          labelText=""
+                          accept=".csv"
+                          uploadMode="useForm"
+                          (change)="onFileChange($event)" 
+                        >
+                        </dx-file-uploader>
+                    </div>
+                  </div>
+                </div>
+                <div class="dx-field">
+                  <div class="dx-field-label">File Name</div>
+                  <div class="dx-field-value">
+                    <dx-text-box
+                      class=""
+                      [value]="fileName"
+                      [inputAttr]="{ 'aria-label': 'City' }"
+                    >
+                    </dx-text-box>
+                  </div>
+                </div>
+              </mat-dialog-content>
+              
+              <div class="modal_btn">
+                <button mat-raised-button (click)="import()" color="primary">Import</button>
+                  <button mat-raised-button (click)="cancel()" color="primary">Cancel</button>
+              </div>
+        </div>
+        </dx-popup>
+        
+        <dx-data-grid
+        id="gridContainer"
+        class="grid-table"
+        [dataSource]="unassigned_tags"
+        [showBorders]="true"
+        (onExporting)="exportGridUnsignTags($event)"
+        [allowColumnReordering]="true"
+        [columnAutoWidth]="true"
+        [columnMinWidth]="20"
+        [allowColumnResizing]="true"
+        [customizeColumns]="customizeColumns"
+
+        >
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+        <dxo-sorting mode="multiple"></dxo-sorting>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="10"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="[5, 10, 'all']"
+            displayMode="full"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        </dx-data-grid>    
+
+    </mat-tab>
+    <mat-tab label="Waiting for Approval">
+
+        <div>
+            <dx-data-grid
+            #dataGridRef
+            id="gridContainer"
+            class="grid-table"
+            [dataSource]="approvals"
+            [showBorders]="true"
+            (onExporting)="exportPendingTags($event)"
+            [allowColumnReordering]="true"
+            [columnAutoWidth]="true"
+            [columnMinWidth]="20"
+            [allowColumnResizing]="true"
+            [customizeColumns]="customizeWaitAppColumns"
+            >
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling columnRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            </dx-data-grid>    
+    
+        </div>
+        <div class="save_btn">
+            <button mat-button mat-raised-button color="primary" style="margin-right: 10px;" (click)="approveTag()">Approve</button>
+            <button mat-button mat-raised-button color="primary" (click)="openDisAppModal()">DisApprove</button>
+        </div>
+
+        <dx-popup 
+        [(visible)]="isDisapproveReasonModal"
+        [title]="'Add Design Value'"
+        [width]="300"
+        [height]="300"
+        [dragEnabled]="true"
+        [closeOnOutsideClick]="true">
+        <div>
+            <div class="dx-fieldset">
+            
+                <div class="dx-field">
+                    <div class="dx-field-label">Remarks</div>
+                    <div class="dx-field-value">
+                    <dx-text-box [value]="remarks"
+                        [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                    ></dx-text-box>
+                    </div>
+                </div>
+            
+                <div class="modal_btn">
+                    <button mat-button mat-raised-button color="primary"(click)="disApproveTag()">Save</button>
+                    <button mat-raised-button (click)="closeDisAproveMOdal()" color="primary">Cancel</button>
+                </div>
+            </div>
+            
+        </div>
+    </dx-popup>
+
+    </mat-tab>
+
+    <mat-tab label="Assigned">
+
+    <dx-data-grid
+    id="gridContainer"
+    class="grid-table"
+    [dataSource]="assignedTags"
+    [showBorders]="true"
+    (onExporting)="exportGridAssignTags($event)"
+    [allowColumnReordering]="true"
+    [columnAutoWidth]="true"
+    [columnMinWidth]="30"
+    [allowColumnResizing]="true"
+    [customizeColumns]="customizeColumns"
+    >
+
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    </dx-data-grid>
+
+    </mat-tab>
+
+    <mat-tab label="Proces Mode">
+
+        <div class="body_content">
+            <dx-data-grid
+            id="gridContainer"
+            class="grid-table"
+            [dataSource]="processmodes"
+            [showBorders]="true"
+            (onExporting)="exportPM($event)"
+            [allowColumnReordering]="true"
+            [columnAutoWidth]="true"
+            [columnMinWidth]="20"
+            [allowColumnResizing]="true"
+            (onRowInserted)="addPM($event)"
+            (onRowUpdating)="updatePM($event)"
+            (onRowRemoving)="deletePM($event)"
+            >
+            <dxi-column dataField="ProcessModeName" caption="Process Mode Name" dataType="string" ></dxi-column>
+            <dxi-column dataField="IsDefault" caption="IsDefault" dataType="boolean" ></dxi-column>
+        
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+                mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true"
+                >
+                <dxo-popup
+                    title="Process Mode"
+                    [showTitle]="true"
+                    [width]="500"
+                    [height]="250"
+                >
+                </dxo-popup>
+                    
+            </dxo-editing>
+            </dx-data-grid>    
+
+        </div>
+    
+    </mat-tab>
+    
+</mat-tab-group>

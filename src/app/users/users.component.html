@@ -1,0 +1,127 @@
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab label="Users">
+        <dx-data-grid
+        id="gridContainer"
+        class="grid-table"
+        keyExpr=""
+        [dataSource]="users"
+        [showBorders]="true"
+        (onInitNewRow)="onInitNewRow($event)"
+        (onRowInserted)="addUser($event)"
+        (onRowUpdating)="updateUser($event)"
+        (onRowRemoving)="deleteUser($event)"
+
+        >
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-sorting mode="multiple"></dxo-sorting>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="10"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="[5, 10, 'all']"
+            displayMode="full"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxi-column dataField="UserName" caption="User Name" dataType="string" ></dxi-column>
+        <dxi-column *ngIf="!isEditing" dataField="UserPass" caption="User Password" [visible]="false" dataType="string"></dxi-column>
+        <dxi-column *ngIf="isEditing" dataField="UserPass" caption="User Password"  [cellTemplate]="passwordCellTemplate"></dxi-column>
+        <dxi-column dataField="Admin" caption="Admin" dataType="boolean" ></dxi-column>        
+        <dxi-column dataField="Active" caption="Active" dataType="boolean" [defaultValue]="true"></dxi-column>
+        <dxi-column *ngIf="!isEditing" dataField="CreatedDate" caption="Created DateTime" ></dxi-column>
+        <dxi-column *ngIf="isEditing" dataField="CreatedDate" caption="Created DateTime" [visible]="false"></dxi-column>
+
+            <dxo-editing
+                mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true"
+                [useIcons]="true"
+                >
+                <dxo-form >
+                    <dxi-item dataField="UserName" caption="User Name" dataType="string" ></dxi-item>
+                    <dxi-item  dataField="UserPass" caption="User Password" dataType="string"></dxi-item>
+                    <dxi-item dataField="Admin" caption="Admin" dataType="boolean" ></dxi-item>        
+                    <dxi-item dataField="Active" caption="Active" dataType="boolean" [defaultValue]="true"></dxi-item>
+                </dxo-form>
+                <dxo-popup
+                    title="User Config"
+                    [showTitle]="true"
+                    [width]="500"
+                    [height]="250"
+                >
+                </dxo-popup>
+                
+            </dxo-editing>
+        </dx-data-grid>
+    </mat-tab>
+
+    <mat-tab label="User Area Access">
+        <!-- <div class="filter_sec">
+            <div class="right-side">
+                <dx-select-box
+                  [items]="users"
+                  [inputAttr]="{ 'aria-label': 'Level' }"
+                  displayExpr="username"
+                  valueExpr="username"
+                  [value]=""
+                  (onValueChanged)="selectUser($event)"
+                 placeholder="Select User"
+                ></dx-select-box>
+              </div>
+              <div class="right-side">
+                <dx-select-box
+                  [items]="levels"
+                  [inputAttr]="{ 'aria-label': 'Level' }"
+                  [value]=""
+                  (onValueChanged)="selectLevel($event)"
+                 placeholder="Select Level"
+                ></dx-select-box>
+              </div>    
+        </div> -->
+        <dx-data-grid
+        id="gridContainer"
+        class="grid-table"
+        keyExpr=""
+        [dataSource]="user_access"
+        [showBorders]="true"
+        (onRowUpdating)="updateLevels($event)"
+
+        >
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-sorting mode="multiple"></dxo-sorting>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="10"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="[5, 10, 'all']"
+            displayMode="full"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxi-column dataField="UserName" caption="User Name" dataType="string" ></dxi-column>
+        <dxi-column dataField="Proposer" caption="Proposer" dataType="boolean" ></dxi-column>
+        <dxi-column dataField="Approver" caption="Approver" dataType="boolean" ></dxi-column>
+        <dxi-column dataField="Enforcer" caption="Enforcer" dataType="boolean" ></dxi-column>
+        <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowAdding]="false"
+        [allowDeleting]="false"
+        >
+        <dxo-popup
+            title="user"
+            [showTitle]="true"
+            [width]="500"
+            [height]="250"
+        >
+        </dxo-popup>
+        
+    </dxo-editing>
+        </dx-data-grid>
+    </mat-tab>
+</mat-tab-group>

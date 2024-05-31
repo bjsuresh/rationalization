@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>Add Change Request</h2>
+
+<div label="Add Change Request">
+    <div class="req_body_form" [formGroup]="RequestGroup">
+      <table style="height: 100%; width: 100%;">
+          <tr>
+              <td style="vertical-align: top;">
+                  <table class="dx-fieldset">
+                  <!-- <tr>
+                      <td>S No</td>
+                      <td><dx-text-box [inputAttr]="{ 'aria-label': 'No' }" formControlName="nottification_no"></dx-text-box></td>
+                  </tr> -->
+                  <tr>
+                      <td colspan="1">Plant</td>
+                      <td colspan="5">
+                        <dx-select-box [items]="plants" (onValueChanged)="onPlantValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="plant"></dx-select-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('plant')?.hasError('required')">Plant is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="1">Process Mode</td>
+                    <td colspan="5">
+                        <dx-select-box [items]="processmodes" (onValueChanged)="onPMValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="processmode"></dx-select-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('processmode')?.hasError('required')">Process Mode is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <tr>
+                      <td colspan="1">Tag name</td>
+                      <td colspan="5">
+                        <dx-select-box [items]="tagnames" (onValueChanged)="onTagValChanged($event)" [inputAttr]="{ 'aria-label': 'Alrm type' }"  formControlName="tagname"></dx-select-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('tagname')?.hasError('required')">Tag Name is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <!-- <tr>
+                      <td>Tag type</td>
+                      <td><dx-select-box [items]="tagtypes" [inputAttr]="{ 'aria-label': '' }"></dx-select-box></td>
+                  </tr> -->
+                  <tr>
+                      <td colspan="1">Alarm type / Configuration parameter</td>
+                      <td colspan="5"><dx-select-box [items]="params" [inputAttr]="{ 'aria-label': 'Alrm type' }" (onValueChanged)="onParamValChanged($event)"  formControlName="alrmtype "></dx-select-box></td>
+                  </tr>
+                  <tr>
+                    <td colspan="1">Tag Description</td>
+                    <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Tag Description' }" formControlName="tagdesc"></dx-text-box></td>
+                    </tr>
+                  <tr>
+                      <td colspan="1">Existing alarm set point / Configuration parameter</td>
+                      <td colspan="5">
+                        <dx-text-box [inputAttr]="{ 'aria-label': 'Currentval' }"  formControlName="currentval"></dx-text-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('currentval')?.hasError('required')">Current value is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <tr>
+                      <td colspan="1">Proposed alarm set point / Configuration parameter</td>
+                      <td colspan="5">
+                        <dx-text-box [inputAttr]="{ 'aria-label': 'Proposed val' }"  formControlName="proposedvalue"></dx-text-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('proposedvalue')?.hasError('required')">Proposed value is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <tr>
+                      <td colspan="1">Reason for change (Add additional page if required)</td>
+                      <td colspan="5">
+                        <dx-text-box [inputAttr]="{ 'aria-label': 'Reason' }"  formControlName="reason"></dx-text-box>
+                        <!-- <mat-error *ngIf="RequestGroup.get('reason')?.hasError('required')">Reason is required</mat-error> -->
+                    </td>
+                  </tr>
+                  <tr>
+                      <td colspan="1">Mention Safe Operating Limit (Safe operating range with ref document no.)</td>
+                      <td colspan="5"><dx-text-box [inputAttr]="{ 'aria-label': 'Min/Max Value' }"  formControlName="min_max_val"></dx-text-box></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td> 
+                        <h5>Initiated by</h5>
+                    </td>
+                    <td colspan="4">
+                        <h5>Approved by</h5>
+                    </td>
+                  </tr>    
+                <tr>
+                    <td>Signature</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td></td>
+                    <td>Instrument</td>
+                    <td>Operations</td>
+                    <td>TS</td>
+                    <td>Reliability</td>
+                </tr>
+                <tr>
+                    <td>Designation</td>
+                    <td>Engg./AM/DM</td>
+                    <td colspan="3">Manager/AGM</td>
+                    <td>AGM</td>
+                </tr>
+
+                  </table>
+              </td>
+          </tr>
+      </table>
+      <div class="save_btn">
+        <button mat-button mat-raised-button color="primary" (click)="addNewChangeRequest()">Save</button>
+      </div>
+      
+    </div>          
+</div>

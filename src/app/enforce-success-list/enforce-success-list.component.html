@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Enforce Success List</h2>
+<mat-dialog-content class="mat-typography">
+
+    <dx-data-grid
+    id="gridContainer"
+    [columns]="[  
+    'TagName',
+    'Parameter',
+    'New_Value',
+    'Requested_Time',
+    'Requestor',
+    'Enforced_Time',
+    'OPCServer'
+    ]"
+    [dataSource]="dataSource"
+    [showBorders]="true"
+    (onExporting)="exportGrid($event)"
+    >
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" [allowExportSelectedData]="false"></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    </dx-data-grid>
+
+</mat-dialog-content>

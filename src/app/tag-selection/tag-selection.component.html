@@ -1,0 +1,46 @@
+<div class="btn_grp">
+  <h2 >Tag Selection</h2>
+  <div>
+    <button mat-button color="primary" (click)="openRequestDialog()">Change Request</button> 
+    <button mat-raised-button color="warn" (click)="openAssistDialog()">
+      <mat-icon>quiz</mat-icon>
+      Assist
+    </button>          
+  </div>
+</div>
+
+<dx-data-grid
+  id="gridContainer"
+  class="gridTable"
+  [columnAutoWidth]="true"
+  [dataSource]="dataSource"
+  [showBorders]="true"
+  (onExporting)="onExporting($event)"
+
+  > 
+  <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+  <dxo-filter-builder
+    
+    [allowHierarchicalFields]="true"
+  >
+  </dxo-filter-builder>
+  <dxo-filter-builder-popup [position]="popupPosition">
+  </dxo-filter-builder-popup>
+  <!-- <dxo-header-filter [visible]="true"></dxo-header-filter> -->
+
+  <dxo-selection mode="multiple"></dxo-selection>
+  <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+  <dxo-sorting mode="multiple"></dxo-sorting>
+  <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+  <dxo-paging [pageSize]="10"> </dxo-paging>
+  <dxo-pager
+      [visible]="true"
+      [allowedPageSizes]="[5, 10, 'all']"
+      displayMode="full"
+      [showPageSizeSelector]="true"
+      [showInfo]="true"
+      [showNavigationButtons]="true"
+  >
+  </dxo-pager>
+
+</dx-data-grid>

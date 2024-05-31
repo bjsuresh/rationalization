@@ -1,0 +1,288 @@
+
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectTabIndex">
+  <mat-tab label="Assist">
+    <div class="req_body_form" [formGroup]="employee">
+      <table style="height: 100%; width: 100%;">
+          <tr>
+              <td style="vertical-align: top;">
+                  <table class="dx-fieldset">
+
+                  <tr rowspan="6">
+                      <td colspan="1">DCS_Tag</td>
+                      <td colspan="2">
+                        <!-- <dx-text-box [inputAttr]="{ 'aria-label': 'DCS Tag' }" formControlName="DCS_Tag"></dx-text-box> -->
+                        <dx-select-box [items]="tagsList" (onValueChanged)="onValChanged($event)" [inputAttr]="{ 'aria-label': 'DCS_Tag' }"  formControlName="DCS_Tag"></dx-select-box>
+                      </td>
+                      <td colspan="1">Event_Type</td>
+                      <td colspan="2">
+                        <!-- <dx-text-box [inputAttr]="{ 'aria-label': 'Event Type' }" formControlName="Event_Type"></dx-text-box> -->
+                        <dx-select-box [items]="parameters"  [inputAttr]="{ 'aria-label': 'Event_Type' }"  formControlName="Event_Type"></dx-select-box>
+                      </td>
+                  </tr>
+                  <tr rowspan="6">
+                    <td colspan="1">
+                      <div class="tabcell">
+                        <p>Purpose / Cause of alarm </p>                      
+                        <button mat-button mat-raised-button color="primary" (click)="addCauseAlarmItem()">
+                          <mat-icon>add</mat-icon>Add
+                        </button>  
+                      </div>
+                    </td>
+                    <td colspan="5">
+                      <!-- <ng-container formArrayName="causeAlarmItems">
+                        <div *ngFor="let control of causeAlarmItems.controls; let i = index">
+                          <dx-text-box class="input" [inputAttr]="{ 'aria-label': 'causeAlarmItem_' + i }" [formControlName]="i"></dx-text-box>
+                        </div>
+                      </ng-container> -->
+                      
+                      <ng-container formArrayName="causeAlarmItems">
+                      <div *ngFor="let control of causeAlarmItems.controls; let i = index">
+                          <div class="tabcell">
+                              <dx-text-box class="input" [inputAttr]="{ 'aria-label': 'causeAlarmItem_' + i }" [formControlName]="i"></dx-text-box>
+                              <button mat-button mat-raised-button color="warn" (click)="removeCauseAlarmItem(i)" *ngIf="i>=1">
+                                <mat-icon>delete</mat-icon> Remove
+                              </button>
+                          </div>
+                      </div>   
+                      </ng-container>
+                  </td>
+
+                  </tr>
+                  <tr rowspan="6">
+                    
+                      <td colspan="1">
+                        <div class="tabcell">
+                          <p>Consequence if alarm ignored</p>                      
+                          <button mat-button mat-raised-button color="primary" (click)="addConsequenceAlarmItem()">
+                            <mat-icon>add</mat-icon>Add
+                          </button>  
+                        </div>
+                      </td>
+                      <td colspan="4">
+                        <ng-container formArrayName="consequenceAlarmItems">
+
+                          <div *ngFor="let control of consequenceAlarmItems.controls; let i = index">
+                            <div class="tabcell">
+                                <dx-text-box class="input" [inputAttr]="{ 'aria-label': 'consequenceAlarmItem_' + i }" [formControlName]="i">></dx-text-box>
+                                <button mat-button mat-raised-button color="warn" (click)="removeConsequenceAlarmItem(i)" *ngIf="i>=1">
+                                  <mat-icon>delete</mat-icon> Remove
+                                </button>
+                            </div>
+                          </div> 
+                        </ng-container>
+                        </td>
+                  </tr>
+                  <tr rowspan="6">
+                    <td colspan="1">Response Time in mins</td>
+                    <td colspan="2">
+                      <dx-text-box [inputAttr]="{ 'aria-label': 'time' }" formControlName="time"></dx-text-box>
+                    </td>
+                    <td colspan="1">Effective Response Time in mins</td>
+                    <td colspan="2">
+                      <dx-text-box [inputAttr]="{ 'aria-label': 'Effective Response Time' }"  formControlName="EffTime"></dx-text-box>
+                    </td>
+                  </tr>
+                  <tr rowspan="6">
+                    <td colspan="1">
+                      <div class="tabcell">
+                        <p>Operator Response </p>                      
+                        <button mat-button mat-raised-button color="primary" (click)="addResItem()">
+                          <mat-icon>add</mat-icon>Add
+                        </button>  
+                      </div>
+                    </td>
+                    <td colspan="5">
+                      <ng-container formArrayName="operatorResItems">
+                        <div *ngFor="let control of operatorResItems.controls; let i = index">
+                            <div class="tabcell">
+                                <dx-text-box class="input" [inputAttr]="{ 'aria-label': 'operatorResItem_' + i }" [formControlName]="i">></dx-text-box>
+                                <button mat-button mat-raised-button color="warn" (click)="removeResItem(i)" *ngIf="i>=1">
+                                  <mat-icon>delete</mat-icon> Remove
+                                </button>
+                            </div>
+                        </div> 
+                      </ng-container>                 
+                  </td>
+                  </tr>
+                  <tr rowspan="6">
+                    <td colspan="1">Comments</td>
+                    <td colspan="5">
+                      <dx-text-box [inputAttr]="{ 'aria-label': 'comments' }"  formControlName="comments"></dx-text-box>
+                    </td>
+                  </tr>
+                  <tr rowspan="6">
+                    <td colspan="1">reviewDate</td>
+                    <td colspan="2">
+                      <dx-date-box
+                      type="date" [inputAttr]="{ 'aria-label': 'reviewDate' }" formControlName="reviewDate"></dx-date-box>
+                    </td>
+                    <td colspan="1">reviewBy</td>
+                    <td colspan="2">
+                      <dx-text-box [inputAttr]="{ 'aria-label': 'reviewBy' }" formControlName="reviewBy"></dx-text-box>
+                    </td>
+                  </tr>
+                  </table>
+                  <div class="save_btn">
+                    <button mat-button mat-raised-button color="primary" (click)="save()">Save</button>
+                  </div>
+            
+              </td>
+          </tr>
+      </table>
+      
+    </div>          
+  </mat-tab>
+
+  <mat-tab label="View all Assists">
+    <dx-data-grid
+    id="gridContainer"
+    class="gridTable"
+    [columns]="[  
+    'tag',
+    'type',
+    'cause_of_alarm',
+    'consequence_of_alarm',
+    'time',
+    'EffTime',
+    'operator_response',
+    'comments',
+    'reviewBy'
+    ]"
+    [dataSource]="dataSource"
+    [showBorders]="true"
+    [columnAutoWidth]="true"
+    dataRowTemplate="dataRowTemplateName"
+    [rowAlternationEnabled]="false"
+    [showRowLines]="true"
+    (onExporting)="exportGrid($event)"
+
+    >
+    <dxi-column dataField="tag" dataType="string"></dxi-column>
+    <dxi-column dataField="type" dataType="string"></dxi-column>
+    <dxi-column dataField="time" dataType="string"></dxi-column>
+  
+    <ng-container *dxTemplate="let employee of 'dataRowTemplateName'">
+      <tr class="main-row">
+        <td colspan="2">{{ employee.data.tag }}</td>
+        <td colspan="2">{{ employee.data.type }}</td>
+        <td colspan="2">{{ employee.data.time }}</td>
+      </tr>
+      <tr class="notes-row">
+        <td colspan="6">
+          <div>
+            <h3>Purpose of Alarms:</h3>
+            <ul>
+              <li *ngFor="let alarm of employee.data.cause_of_alarm">{{ alarm }}</li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <div>
+            <h3>Consequence of Alarms:</h3>
+            <ul>
+              <li *ngFor="let alarm of employee.data.consequence_of_alarm">{{ alarm }}</li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <div>
+            <h3>Operator Response:</h3>
+            <ul>
+              <li *ngFor="let alarm of employee.data.operator_response">{{ alarm }}</li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    </dx-data-grid>
+
+  </mat-tab>
+</mat-tab-group>
+
+
+  <!-- <mat-tab label="Assist 1">
+    <div id="form-container">
+      <div class="add-button-container">
+        <button mat-button mat-raised-button color="primary" (click)="addCauseAlarmItemAss1()">Add Cause Alarm</button>
+        <button mat-button mat-raised-button color="primary" (click)="addConsequenceAlarmItemAss1()">Add Consequence Alarm</button>
+      </div>
+
+      <dx-form id="form" [formData]="employee">
+        <dxi-item itemType="group" [colCount]="2" caption="Operator Alarm Response Details">
+          <dxi-item dataField="tag">
+              <dxo-label template="DCS_Tag"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="type">
+              <dxo-label template="Event_Type"></dxo-label>
+            </dxi-item>
+          
+          <dxi-item *ngFor="let item of causeAlarmItemsAss1" [dataField]="item.dataField" colSpan="2">
+            <dxo-label *ngIf="item.label" [template]="item.label"></dxo-label>
+          </dxi-item>
+          
+          <dxi-item *ngFor="let item of consequenceAlarmItemsAss1" [dataField]="item.dataField" colSpan="2">
+            <dxo-label *ngIf="item.label" [template]="item.label"></dxo-label>
+          </dxi-item>
+
+          <dxi-item
+            dataField="Time"
+            editorType="dxSelectBox"
+          >
+            <dxi-validation-rule
+              type="required"
+              message="Time is required"
+            ></dxi-validation-rule>
+            <dxo-label template="Response Time"></dxo-label>
+          </dxi-item>
+          <dxi-item
+          dataField="EffTime"
+          editorType="dxSelectBox"
+        >
+          <dxi-validation-rule
+            type="required"
+            message="Effective Time is required"
+          ></dxi-validation-rule>
+          <dxo-label template="Effective Response Time"></dxo-label>
+        </dxi-item>
+        <dxi-item dataField="operator_response" colSpan="2">
+          <dxo-label template="Operator Response"></dxo-label>
+      </dxi-item>
+      
+          <dxi-item
+          dataField="comments"
+          editorType="dxTextArea"
+          [colSpan]="2"
+        >
+          <dxo-label template="comments"></dxo-label>
+        </dxi-item>
+        <dxi-item dataField="reviewDate">
+          <dxo-label template="Review Date"></dxo-label>
+        </dxi-item>
+        <dxi-item dataField="reviewBy">
+          <dxo-label template="Review By"></dxo-label>
+        </dxi-item>
+      </dxi-item>
+      </dx-form>
+      <div class="save_btn">
+        <button mat-button mat-raised-button color="primary">Save</button>
+      </div>
+    </div>
+  </mat-tab> -->

@@ -1,0 +1,33 @@
+:host {
+    display: block;
+    width: calc(100% - 30px);
+}
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.grp1 {
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 10px 0px;
+}
+.btn_grp {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0px;
+    align-items: center;
+}
+.btn_grp button {
+    margin-left: 5px;
+}
+.import_btn{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin: 10px 0px;
+}

@@ -1,0 +1,155 @@
+<!-- <div id="center-content">
+    <div class="content dx-fieldset">
+        <div class="dx-field">
+          <dx-tabs #tabs [dataSource]="menus" [(selectedItem)]="selectedTab">
+          </dx-tabs>
+        </div>
+    </div>
+</div> -->
+
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" >
+    <mat-tab label="Home">
+
+      <div class="body_content">
+        <div class="btn_grp">
+          <!-- <button mat-button color="primary" (click)="openDialog()">Filter</button> -->
+          <div class="dx-field" style="display: flex;">
+            <div class="dx-field-label">Plant</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="plants"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [value]="plant"
+                searchMode="contains"
+                [searchTimeout]="200"
+                [minSearchLength]="0"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>  
+          <div class="dx-field" style="display: flex;">
+            <div class="dx-field-label">Area</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="areas"
+                [inputAttr]="{ 'aria-label': 'Area' }"
+                searchMode="contains"
+                [value]="area"
+                [searchTimeout]="200"
+                [minSearchLength]="0"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div> 
+          <div class="dx-field" style="display: flex;">
+            <div class="dx-field-label">Unit</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="units"
+                [inputAttr]="{ 'aria-label': 'Unit' }"
+                [value]="unit"
+                searchMode="contains"
+                [searchTimeout]="200"
+                [minSearchLength]="0"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div> 
+
+          <div class="">
+              <button mat-button color="secondary">Refresh</button>        
+              <button mat-raised-button color="primary" (click)="openCompareView()">Compare Designs</button>
+              <!-- <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+                <mat-icon>filter_list</mat-icon>
+              </button> -->
+          </div>
+        </div>
+        <dx-data-grid
+        id="gridContainer"
+        
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        (onExporting)="exportGrid($event)"
+        [allowColumnReordering]="true"
+        [columnAutoWidth]="true"
+      >
+          <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+          <dxo-sorting mode="multiple"></dxo-sorting>
+          <dxo-search-panel [visible]="true"></dxo-search-panel>
+          <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+          <dxo-paging [pageSize]="10"> </dxo-paging>
+          <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="[5, 10, 'all']"
+              displayMode="full"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+        </dx-data-grid>
+ 
+        <!-- <dx-data-grid
+        id="gridContainer"
+        
+        [dataSource]="dataSource1"
+        [showBorders]="true"
+        (onExporting)="exportGrid($event)"
+        [allowColumnReordering]="true"
+        [columnAutoWidth]="true"
+      >
+          <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+          <dxo-sorting mode="multiple"></dxo-sorting>
+          <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+          <dxo-paging [pageSize]="10"> </dxo-paging>
+          <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="[5, 10, 'all']"
+              displayMode="full"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+        </dx-data-grid> -->
+      </div>
+      
+    </mat-tab>
+    <!-- <mat-tab label="Change Requests">
+
+        <button mat-button color="primary" (click)="addChangeRequest()">Import Change Request</button>
+
+      
+        <dx-data-grid
+        id="gridContainer"
+        [columns]="[  
+          'ChangeRequestName',
+          'ProcessMode',
+          'ProposedBy',
+          'ProposedDate'
+        ]"
+      
+        [dataSource]="change_requests"
+        [showBorders]="true"
+        (onExporting)="exportGrid($event)"
+        (onCellClick)="onCellClick($event)"
+      >
+          <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+          <dxo-sorting mode="multiple"></dxo-sorting>
+          <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+          <dxo-paging [pageSize]="10"> </dxo-paging>
+          <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="[5, 10, 'all']"
+              displayMode="full"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true"
+          >
+          </dxo-pager>
+      </dx-data-grid>
+    </mat-tab> -->
+  </mat-tab-group>

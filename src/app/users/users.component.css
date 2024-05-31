@@ -1,0 +1,16 @@
+.filter_sec {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0px;
+  }
+
+.right-side {
+    /* position: absolute;
+    right: 12px;
+    top: 6px; */
+    width: 150px;
+    margin-left: 10px;
+} 
+.grid-table{
+  margin: 10px 0px;
+}

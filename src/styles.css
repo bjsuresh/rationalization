@@ -1,0 +1,120 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html::-webkit-scrollbar {
+  display:none;
+}
+  
+.mat-mdc-card-header-text {
+    margin: auto;
+    padding-bottom: 10px;
+}
+.mat-drawer-content {
+    width: 100%;
+}
+
+
+.dx-datagrid-borders>.dx-datagrid-filter-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    border: none;
+}
+.dx-header-row {
+    background-color: #a98ed8;
+    color: #fff;
+  }
+  .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+  }
+  
+
+.mat-mdc-menu-item {
+    min-height: 30px !important;
+}
+  
+.mat-grid-tile{
+    height: 60%;
+}
+
+.dx-datagrid-borders>.dx-datagrid-filter-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    border: none;
+}
+.dx-header-row {
+    background-color: #a98ed8;
+    color: #fff;
+  }
+  .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+  }
+  /* .dx-box-item-content {
+    flex-direction: column !important;
+  } */
+  .mat-expansion-panel {
+    box-shadow: none !important;
+  }
+  .mat-expansion-panel-body {
+    padding: 0px !important;
+  }
+
+  .dx-datagrid-search-panel {
+    width: 250px !important;
+  }
+ 
+  .mdc-dialog__container {
+    width: 700px;
+  }
+  /* .mat-mdc-dialog-container .mdc-dialog__title {
+    color: #fff !important;
+    background-color: #a98ed8 !important;
+  } */
+  .dx-fileuploader-input-wrapper::before {
+    padding-top: 0em;
+  }
+  .mat-mdc-tab .mdc-tab-indicator__content--underline {
+    border-top-width: 4px !important;
+  }
+  .mdc-list-item.mdc-list-item--with-one-line {
+    height: 40px !important;
+  }
+
+  .dx-popup-title.dx-toolbar {
+    background-color: #a98ed8 !important;
+    padding: 0px 20px;
+    color: #fff;
+  }
+  .dx-popup-bottom .dx-button {
+    min-width: 100px;
+    background-color: #a98ed8 ;
+    color: #fff !important;
+}
+.dx-popup-bottom .dx-button:hover {
+    background-color: #673ab7  !important;
+}
+
+.mat-mdc-tab-body-content::-webkit-scrollbar {
+  display:none;
+  width: 0 !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.mat-mdc-tab-body-content {
+ -ms-overflow-style: none; /* IE and EDGE */;
+  scrollbar-width: none; /* Firefox */
+}
+
+.mat-mdc-dialog-container .mdc-dialog__title {
+  background-color: #a98ed8 !important;
+  padding: 0 20px;
+  color: #fff !important;
+  padding-bottom: 10px;
+}

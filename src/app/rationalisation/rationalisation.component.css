@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    width: calc(100% - 30px);
+  }
+  .btn_grp {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0px;
+  }
+ 
+  .body_content {
+    padding-bottom: 50px;
+  }

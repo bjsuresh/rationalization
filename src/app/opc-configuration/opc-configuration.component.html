@@ -1,0 +1,184 @@
+<div class="body">
+
+    <div class="setting_form">
+      <form class="" [formGroup]="OPCGrp">
+        <div class="dx-fieldset" style="margin: 30px 2px;">
+          <div class="dx-field server_fields">
+            <div class="server_name">Select OPC Server</div>
+            <div class="">
+              <dx-select-box
+              class="select_box"
+                [items]="servers"
+                [searchEnabled]="true"
+                [inputAttr]="{ 'aria-label': 'Simple Product' }"
+                formControlName="server"
+              ></dx-select-box>
+            </div> 
+            <!-- <div style="padding-left: 5PX;">Status: {{status}}</div> -->
+            <div style="padding-left: 5px;">
+              Status: <span [style.background-color]="status ? 'green' : 'red'" class="status_text">{{ status ? 'Connected' : 'Not Connected' }}</span>
+          </div>
+          
+          </div>
+        </div>
+      
+        <div class="dx-field" style="width: 350px; display: flex;">
+          <div class="dx-field-label">OPC write time</div>
+          <div class="dx-field-value" style="width: 60px;">
+            <dx-text-box
+              [inputAttr]="{ 'aria-label': 'Name' }" formControlName="opc_time"
+            ></dx-text-box>
+          </div>
+          <p style="padding: 5px;">mins</p>
+        </div>
+      
+        <div class="save_btn">
+          <button mat-button mat-raised-button color="primary" (click)="saveOPCSettings()">Save</button>
+        </div>
+      </form>  
+    </div>
+  
+    <dx-popup 
+    [(visible)]="isBrowseTags"
+    [title]="'Add Design Value'"
+    [width]="500"
+    [height]="380"
+    [dragEnabled]="true"
+    [closeOnOutsideClick]="true">
+    <div >
+        
+    </div>
+  </dx-popup>
+  
+  <dx-popup 
+  [(visible)]="isAlertModal"
+  [title]="'Alert'"
+  [width]="200"
+  [height]="170"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true">
+  <div>
+    <div class="alrt_text">The Selected Tag is not imported</div>
+  </div>
+      
+  </dx-popup>
+  
+  
+  <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
+      <mat-tab label="Allowed Tag List">
+          <dx-data-grid
+          id="gridContainer"
+          class="grid-table"
+          [dataSource]="all_tag_list"
+          [showBorders]="true"
+          [allowColumnReordering]="true"
+          [columnAutoWidth]="true"
+          (onRowInserted)="addAllowedOPCTag($event)"
+          (onRowRemoving)="deleteAllowedOPCTag($event)"
+          (onExporting)="exportAllTagList($event)"
+          >
+              <dxi-column dataField="TagName" caption="TagName"
+                >
+                  <dxo-lookup [dataSource]="tag_list">
+                  </dxo-lookup>
+              </dxi-column>
+              <dxi-column dataField="Parameter" caption="Parameter" dataType="string" ></dxi-column>
+              <dxi-column dataField="Separator" caption="Separator" dataType="string" ></dxi-column>
+              <dxi-column dataField="TagAlias" caption="TagAlias" dataType="string" ></dxi-column>
+              <dxi-column dataField="Opctag" caption="OPC Tag" dataType="string" ></dxi-column>
+              <dxi-column dataField="Unit" caption="Unit" dataType="string" ></dxi-column>
+              <dxi-column dataField="Area" caption="Area" dataType="string" ></dxi-column>
+              <dxi-column dataField="Plant" caption="parameter" dataType="string" ></dxi-column>
+              <dxi-column dataField="TagDescription" caption="Tag Description" dataType="string" ></dxi-column>
+              <dxi-column dataField="UserName" caption="AllowedBy" dataType="string" ></dxi-column>
+              <dxi-column dataField="AllowedDateTime" caption="AllowedDateTime" dataType="string" ></dxi-column>
+  
+              <dxo-search-panel [visible]="true"></dxo-search-panel>
+              <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+              <dxo-sorting mode="multiple"></dxo-sorting>
+              <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+              <dxo-paging [pageSize]="10"> </dxo-paging>
+              <dxo-pager
+                  [visible]="true"
+                  [allowedPageSizes]="[5, 10, 'all']"
+                  displayMode="full"
+                  [showPageSizeSelector]="true"
+                  [showInfo]="true"
+                  [showNavigationButtons]="true"
+              >
+              </dxo-pager>
+              <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="true"
+              [allowDeleting]="true"
+              >
+                <dxo-form >
+                     <dxi-item dataField="TagName" [colSpan]="2" width="100%"></dxi-item>
+                </dxo-form>
+              <dxo-popup
+                  title="OPC Tag List"
+                  [showTitle]="true"      
+                  [width]="400"
+                  [height]="200"      >
+              </dxo-popup>
+              
+              </dxo-editing>
+      
+          </dx-data-grid> 
+      </mat-tab>
+      <mat-tab label="Blocked Parameter List">
+          <dx-data-grid
+          id="gridContainer"
+          class="grid-table"
+          [dataSource]="block_param_list"
+          [showBorders]="true"
+          [allowColumnReordering]="true"
+          [columnAutoWidth]="true"
+          (onRowInserted)="addOPCBlockedParam($event)"
+          (onRowRemoving)="deleteOPCBlockedParam($event)"
+          (onExporting)="exportBlockParamList($event)"
+          >
+              <dxi-column dataField="OPCParameter" caption="OPC Parameter" dataType="string" >
+                <dxo-lookup [dataSource]="param_list" >
+                </dxo-lookup>
+              </dxi-column>
+              <dxi-column dataField="BlockedBy" caption="Blocked By" dataType="string" ></dxi-column>
+              <dxi-column dataField="BlockedDateTime" caption="Blocked DateTime" dataType="string" ></dxi-column>
+       
+              <dxo-search-panel [visible]="true"></dxo-search-panel>
+              <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+              <dxo-sorting mode="multiple"></dxo-sorting>
+              <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+              <dxo-paging [pageSize]="10"> </dxo-paging>
+              <dxo-pager
+                  [visible]="true"
+                  [allowedPageSizes]="[5, 10, 'all']"
+                  displayMode="full"
+                  [showPageSizeSelector]="true"
+                  [showInfo]="true"
+                  [showNavigationButtons]="true"
+              >
+              </dxo-pager>
+              <dxo-editing
+              mode="popup"
+              [allowUpdating]="false"
+              [allowAdding]="true"
+              [allowDeleting]="true"
+              >
+              <dxo-form >
+                <dxi-item dataField="OPCParameter" [colSpan]="2" ></dxi-item>
+              </dxo-form>
+              <dxo-popup
+                  title="OPC Param List"
+                  [showTitle]="true"
+                  [width]="600"
+                  [height]="200"  
+              >
+              </dxo-popup>
+              
+              </dxo-editing>
+          </dx-data-grid>
+      </mat-tab>
+  </mat-tab-group>
+  </div>

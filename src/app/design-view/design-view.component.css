@@ -1,0 +1,27 @@
+.btn_grp {
+    display: flex;
+    justify-content: space-between;
+    margin-right :20px;
+    padding: 10px 0px;
+}
+.v {
+    margin-right: 20px;
+}
+.body_content {
+    margin: auto;
+    /* width: 500px; */
+}
+.modal_btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.modal_btn button {
+    margin-left: 5px;
+}
+.grid-table {
+    margin: 10px 20px 10px 0px;
+    width: 100vw;
+}

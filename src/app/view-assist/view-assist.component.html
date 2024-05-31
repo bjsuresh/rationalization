@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Alarm Assist</h2>
+
+<dx-data-grid
+id="gridContainer"
+class="gridTable"
+[columns]="[  
+'tag',
+'type',
+'cause_of_alarm',
+'consequence_of_alarm',
+'time',
+'EffTime',
+'operator_response',
+'comments',
+'reviewBy'
+]"
+[dataSource]="dataSource"
+[showBorders]="true"
+[columnAutoWidth]="true"
+dataRowTemplate="dataRowTemplateName"
+>
+<dxi-column dataField="tag" dataType="string"></dxi-column>
+<dxi-column dataField="type" dataType="string"></dxi-column>
+<dxi-column dataField="time" dataType="string"></dxi-column>
+
+<ng-container *dxTemplate="let employee of 'dataRowTemplateName'">
+  <tr class="main-row">
+    <td colspan="2">{{ employee.data.tag }}</td>
+    <td colspan="2">{{ employee.data.type }}</td>
+    <td colspan="2">{{ employee.data.time }}</td>
+  </tr>
+  <tr class="notes-row">
+    <td colspan="6">
+      <div><h3>Purpose of Alarms:</h3>{{ employee.data.cause_of_alarm }}</div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="6">
+      <div><h3>Consequence of Alarms:</h3>{{ employee.data.consequence_of_alarm }}</div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="6">
+      <div><h3>Operator Response:</h3>{{ employee.data.operator_response }}</div>
+    </td>
+  </tr>
+</ng-container>
+<dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+<dxo-sorting mode="multiple"></dxo-sorting>
+<dxo-scrolling  modwe="virtual"> </dxo-scrolling>
+<dxo-paging [pageSize]="10"> </dxo-paging>
+<dxo-pager
+    [visible]="true"
+    [allowedPageSizes]="[5, 10, 'all']"
+    displayMode="full"
+    [showPageSizeSelector]="true"
+    [showInfo]="true"
+    [showNavigationButtons]="true"
+>
+</dxo-pager>
+</dx-data-grid>

@@ -1,0 +1,12 @@
+:host {
+    display: block;
+    /* width: calc(100% - 30px); */
+}
+.grid-table {
+    margin: 0px 0px 10px 20px;
+}
+.ref_btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}

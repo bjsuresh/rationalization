@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>Enforce Todo List</h2>
+<mat-dialog-content class="mat-typography">
+
+    <dx-data-grid
+    id="gridContainer"
+    [columns]="[  
+    'TagId',
+    'TagName',
+    'Parameter',
+    'New_Value',
+    'Requested_Time',
+    'Requestor',
+    'OPCServer'
+    ]"
+    [dataSource]="dataSource"
+    [showBorders]="true"
+    (onRowInserted)="addFun($event)" 
+    (onRowRemoving)="deleteFun($event)"
+    (onExporting)="exportGrid($event)"
+
+    >
+    <dxi-column dataField="TagId" caption="Tag Id" dataType="number" ></dxi-column>
+    <dxi-column dataField="TagName" caption="Tag Name" dataType="string" >
+        <dxo-lookup [dataSource]="tagsList" >
+        </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="Parameter" caption="Parameter" dataType="string" ></dxi-column>
+    <dxi-column dataField="New_Value" caption="New Value" dataType="string" ></dxi-column>
+    <dxi-column dataField="Requested_Time" caption="Requested Time" dataType="datetime" ></dxi-column>
+    <dxi-column dataField="Requestor" caption="Requestor" dataType="string" ></dxi-column>
+    <dxi-column dataField="OPCServer" caption="OPCServer" dataType="string" ></dxi-column>
+
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" [allowExportSelectedData]="false"></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-editing
+        mode="popup"
+        [allowUpdating]="false"
+        [allowAdding]="true"
+        [allowDeleting]="true"
+        [useIcons]="true"
+        >
+        <dxo-form >
+            <dxi-item dataField="TagName" caption="TagName" dataType="string" ></dxi-item>
+            <dxi-item dataField="Parameter" caption="Parameter" dataType="string" ></dxi-item>
+            <dxi-item dataField="New_Value" caption="New_Value" dataType="number" ></dxi-item>
+            <dxi-item dataField="Requested_Time" caption="Requested_Time" dataType="datetime" ></dxi-item>
+            <dxi-item dataField="Requestor" caption="Requestor" dataType="string" ></dxi-item>
+            <dxi-item dataField="OPCServer" caption="OPCServer" dataType="string" ></dxi-item>
+         
+        </dxo-form>
+        <dxo-popup
+            title="Enforce Tag"
+            [showTitle]="true"
+            [width]="500"
+            [height]="550"
+        >
+        </dxo-popup>
+    </dxo-editing>
+
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    </dx-data-grid>
+
+</mat-dialog-content>
+          

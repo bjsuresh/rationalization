@@ -1,0 +1,35 @@
+
+.server_fields {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.server_name {
+    padding-right: 40px;
+}
+.grid-table {
+    padding: 10px 0px;
+}
+/* .select_box {
+    width:400px;
+} */
+.save_btn {
+    display: flex;
+    justify-content: center;
+}
+.status_text {
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+.setting_form {
+    padding: 20px 10px;
+    margin: auto;
+    width: calc(100% - 100px);
+    border: 1px solid #666;
+    border-radius: 10px;
+}
+.alrt_text {
+    color: red;
+    font-size: 15px;
+}

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Tag List</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <dx-data-grid
+    id="gridContainer"
+   
+    [columnAutoWidth]="true"
+    [dataSource]="dataSource"
+    [showBorders]="true"
+    (onExporting)="onExporting($event)"
+
+    > 
+    <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+    <dxo-filter-builder
+     
+      [allowHierarchicalFields]="true"
+    >
+    </dxo-filter-builder>
+    <dxo-filter-builder-popup [position]="popupPosition">
+    </dxo-filter-builder-popup>
+    <!-- <dxo-header-filter [visible]="true"></dxo-header-filter> -->
+
+    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+
+  </dx-data-grid>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-raised-button mat-dialog-close color="primary">Select</button>
+</mat-dialog-actions>

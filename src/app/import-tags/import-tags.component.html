@@ -1,0 +1,110 @@
+<button mat-button mat-raised-button color="primary" (click)="addChangeRequest()">Import Tags</button>
+<dx-popup 
+[(visible)]="isOpenPopup"
+[title]="'Import Tags'"
+[width]="500"
+[height]="250"
+[dragEnabled]="true"
+[closeOnOutsideClick]="true">
+<div>
+    <mat-dialog-content class="mat-typography">
+        <div class="dx-field">
+          <div class="dx-field-label">Import file</div>
+          <div class="dx-field-value">
+            <div id="fileuploader-container">
+                <dx-file-uploader
+                  selectButtonText="Select File"
+                  labelText=""
+                  accept=".csv"
+                  uploadMode="useForm"
+                  (change)="onFileChange($event)" 
+                >
+                </dx-file-uploader>
+            </div>
+          </div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">File Name</div>
+          <div class="dx-field-value">
+            <dx-text-box
+              class=""
+              [value]="fileName"
+              [inputAttr]="{ 'aria-label': 'City' }"
+            >
+            </dx-text-box>
+          </div>
+        </div>
+      </mat-dialog-content>
+      
+      <mat-dialog-actions>
+          <button mat-raised-button mat-dialog-close (click)="import()" color="primary">Import</button>
+      </mat-dialog-actions>
+</div>
+</dx-popup>
+
+<dx-data-grid
+id="gridContainer"
+
+[dataSource]="taglist"
+[showBorders]="true"
+(onExporting)="exportGrid($event)"
+[allowColumnReordering]="true"
+[columnAutoWidth]="true"
+[columnMinWidth]="20"
+[allowColumnResizing]="true"
+[customizeColumns]="customizeColumns"
+(onRowInserted)="addTag($event)" 
+(onRowUpdating)="updateTag($event)"
+(onRowRemoving)="deleteTag($event)"
+>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+  <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+  
+  <dxo-sorting mode="multiple"></dxo-sorting>
+  <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+  <dxo-paging [pageSize]="10"> </dxo-paging>
+  <dxo-pager
+      [visible]="true"
+      [allowedPageSizes]="[5, 10, 'all']"
+      displayMode="full"
+      [showPageSizeSelector]="true"
+      [showInfo]="true"
+      [showNavigationButtons]="true"
+  >
+  </dxo-pager>
+
+  <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowAdding]="true"
+        [allowDeleting]="true"
+        [useIcons]="true"
+        >
+        <dxo-form >
+            <dxi-item dataField="TagName" caption="Tag Name" dataType="string" ></dxi-item>
+            <dxi-item dataField="Parameter" caption="Parameter" dataType="string" ></dxi-item>
+            <dxi-item dataField="Separator" caption="Separator" dataType="string" ></dxi-item>
+            <dxi-item dataField="TagDescription" caption="TagDescription" dataType="string" ></dxi-item>
+            <dxi-item dataField="TagAlias" caption="Tag Alias" dataType="string" ></dxi-item>
+            <dxi-item dataField="Opctag" caption="Opctag" dataType="string" ></dxi-item>
+            <dxi-item dataField="MinValue" caption="MinValue" dataType="number" ></dxi-item>
+            <dxi-item dataField="MaxValu e" caption="MaxValue" dataType="number" ></dxi-item>
+            <dxi-item dataField="EngineeringUnit" caption="EngineeringUnit" dataType="string" ></dxi-item>
+            <dxi-item dataField="Unit" caption="Unit" dataType="string" ></dxi-item>
+            <dxi-item dataField="Area" caption="Area" dataType="string" ></dxi-item>
+            <dxi-item dataField="Plant" caption="Plant" dataType="string" ></dxi-item>
+            <dxi-item dataField="Equipment" caption="Equipment" dataType="string" ></dxi-item>
+            <dxi-item dataField="TagMain" caption="TagMain" dataType="string" ></dxi-item>
+            <dxi-item dataField="CreatedDateTime" caption="CreatedDateTime" dataType="string" ></dxi-item>
+
+        </dxo-form>
+        <dxo-popup
+            title="Impact"
+            [showTitle]="true"
+            [width]="700"
+            [height]="550"yt
+            
+        >
+        </dxo-popup>
+    </dxo-editing>
+</dx-data-grid>

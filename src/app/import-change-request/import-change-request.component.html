@@ -1,0 +1,196 @@
+<h2 mat-dialog-title>Import Change Request</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="dx-field">
+    <div class="dx-field-label">Change Request Location</div>
+    <div class="dx-field-value">
+      <div id="fileuploader-container">
+          <dx-file-uploader
+            selectButtonText="Select File"
+            labelText=""
+            accept="text/csv"
+            uploadMode="useForm"
+            (change)="onFileChange($event)" 
+          >
+          </dx-file-uploader>
+      </div>
+    </div>
+  </div>
+  <div class="dx-field">
+    <div class="dx-field-label">Change Request Name</div>
+    <div class="dx-field-value">
+      <dx-text-box
+        class=""
+        value=""
+        [inputAttr]="{ 'aria-label': 'City' }"
+      >
+      </dx-text-box>
+    </div>
+  </div>
+  <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <div>
+          <div class="dx-field">
+            <div class="dx-field-label">Process mode</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Tag Group</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Tag Name</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Parameter</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+
+          <div class="dx-field">
+            <div class="dx-field-label">Equipment</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div>
+          <div class="dx-field">
+            <div class="dx-field-label">Unit</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Area</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Plant</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Tag type</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Design value</div>
+            <div class="dx-field-value">
+              <dx-select-box
+                [dataSource]="processModeColumns"
+                displayExpr="name"
+                valueExpr="id"
+                [inputAttr]="{ 'aria-label': 'Product' }"
+                [searchMode]="'contains'"
+                [searchExpr]="'name'"
+                [searchEnabled]="true"
+                [showDataBeforeSearch]="true"
+              ></dx-select-box>
+            </div>
+          </div>
+
+        </div>
+      </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-raised-button mat-dialog-close color="primary">Import</button>
+</mat-dialog-actions>
