@@ -11,3 +11,17 @@
   .body_content {
     padding-bottom: 50px;
   }
+  .filter-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.04);
+    margin-bottom: 15px;
+  }
+  .filter-card .dx-field {
+    margin: 0px !important;
+    display: flex;
+    align-items: center;
+  }

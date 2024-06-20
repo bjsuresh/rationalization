@@ -13,7 +13,18 @@
       <div class="body_content">
         <div class="btn_grp">
           <!-- <button mat-button color="primary" (click)="openDialog()">Filter</button> -->
-          <div class="dx-field" style="display: flex;">
+
+          <div class="">
+              <button mat-button color="secondary">Refresh</button>        
+              <button mat-raised-button color="primary" (click)="openCompareView()">Compare Designs</button>
+              <!-- <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
+                <mat-icon>filter_list</mat-icon>
+              </button> -->
+          </div>
+        </div>
+
+        <div class="filter-card">
+          <div class="dx-field">
             <div class="dx-field-label">Plant</div>
             <div class="dx-field-value">
               <dx-select-box
@@ -28,7 +39,7 @@
               ></dx-select-box>
             </div>
           </div>  
-          <div class="dx-field" style="display: flex;">
+          <div class="dx-field">
             <div class="dx-field-label">Area</div>
             <div class="dx-field-value">
               <dx-select-box
@@ -43,7 +54,7 @@
               ></dx-select-box>
             </div>
           </div> 
-          <div class="dx-field" style="display: flex;">
+          <div class="dx-field">
             <div class="dx-field-label">Unit</div>
             <div class="dx-field-value">
               <dx-select-box
@@ -58,14 +69,7 @@
               ></dx-select-box>
             </div>
           </div> 
-
-          <div class="">
-              <button mat-button color="secondary">Refresh</button>        
-              <button mat-raised-button color="primary" (click)="openCompareView()">Compare Designs</button>
-              <!-- <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
-                <mat-icon>filter_list</mat-icon>
-              </button> -->
-          </div>
+          <button mat-raised-button color="primary">Filter</button>
         </div>
         <dx-data-grid
         id="gridContainer"

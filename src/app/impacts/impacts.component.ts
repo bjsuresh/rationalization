@@ -9,7 +9,7 @@ export class ImpactsComponent {
   dataSource : any[] = [
     {
       id:1,
-      ImpactName: "Personnel",
+      ImpactName: "Safety",
     },
     {
       id:2,
@@ -17,7 +17,11 @@ export class ImpactsComponent {
     },
     {
       id:3,
-      ImpactName: "Economic"
+      ImpactName: "Financial"
+    },
+    {
+      id:4,
+      ImpactName: "Customer"
     }
   ];
 

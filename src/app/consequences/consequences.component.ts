@@ -10,22 +10,22 @@ export class ConsequencesComponent {
     {
       id:1,
       ConsequenceName: "No injury or health impact",
-      ImpactName: "Personnel"
+      ImpactName: "Safety"
     },
     {
       id:2,
       ConsequenceName: "First aid injury, no lost time in production",
-      ImpactName: "Personnel"
+      ImpactName: "Safety"
     },
     {
       id:3,
       ConsequenceName: "Production lost time, No permanent disability",
-      ImpactName: "Personnel"
+      ImpactName: "Safety"
     },
     {
       id:4,
       ConsequenceName: "Production lost time, Permanent disability or death",
-      ImpactName: "Personnel"
+      ImpactName: "Safety"
     },
     {
       id:5,
@@ -45,22 +45,22 @@ export class ConsequencesComponent {
     {
       id:8,
       ConsequenceName: "Below C1",
-      ImpactName: "Economic"
+      ImpactName: "Financial"
     },
     {
       id:9,
       ConsequenceName: "Between C1 & C2 $",
-      ImpactName: "Economic"
+      ImpactName: "Financial"
     },
     {
       id:10,
       ConsequenceName: "Between C3 & C4 $",
-      ImpactName: "Economic"
+      ImpactName: "Financial"
     },
     {
       id:11,
       ConsequenceName: "Between C5 & C6 $",
-      ImpactName: "Economic"
+      ImpactName: "Financial"
     },
     {
       id:12,
@@ -71,7 +71,7 @@ export class ConsequencesComponent {
   impacts : any[] = [
     {
       id:1,
-      ImpactName: "Personnel"
+      ImpactName: "Safety"
     },
     {
       id:2,
@@ -79,7 +79,7 @@ export class ConsequencesComponent {
     },
     {
       id:3,
-      ImpactName: "Economic"
+      ImpactName: "Financial"
     }
   ];
 
