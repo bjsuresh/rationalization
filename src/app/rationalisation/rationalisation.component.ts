@@ -83,36 +83,36 @@ export class RationalisationComponent {
   unit=this.units[0];
 
   dataSource1 : any[] = [
-  // {
-  //   id:1,
-  //   processmode: "Feed Mix ",
-  //   processmodeid: "ProcessmodeID",
-  //   taggroup: "TagMain1",
-  //   tagname: "10FIC11",
-  //   parameter: "PVHI",
-  //   tagtype: "AI",
-  //   designvalue:"65",
-  //   opcvalue: "95",
-  //   equipment: "Boiler",
-  //   unit: "81",
-  //   area: "CPP",
-  //   plant: "IOCL BGR"
-  // },
-  // {
-  //   id:2,
-  //   processmode: "Feed Mix ",
-  //   processmodeid: "ProcessmodeID",
-  //   taggroup: "TagMain1",
-  //   tagname: "10FIC12",
-  //   parameter: "PVHI",
-  //   tagtype: "AI",
-  //   designvalue:"70",
-  //   opcvalue: "77",
-  //   equipment: "Boiler",
-  //   unit: "81",
-  //   area: "CPP",
-  //   plant: "IOCL BGR"
-  // }
+  {
+    id:1,
+    processmode: "Feed Mix ",
+    processmodeid: "ProcessmodeID",
+    taggroup: "TagMain1",
+    tagname: "10FIC11",
+    parameter: "PVHI",
+    tagtype: "AI",
+    designvalue:"65",
+    opcvalue: "95",
+    equipment: "Boiler",
+    unit: "81",
+    area: "CPP",
+    plant: "IOCL BGR"
+  },
+  {
+    id:2,
+    processmode: "Feed Mix ",
+    processmodeid: "ProcessmodeID",
+    taggroup: "TagMain1",
+    tagname: "10FIC12",
+    parameter: "PVHI",
+    tagtype: "AI",
+    designvalue:"70",
+    opcvalue: "77",
+    equipment: "Boiler",
+    unit: "81",
+    area: "CPP",
+    plant: "IOCL BGR"
+  }
   ];
 
   // applyFilter(event: Event) {
@@ -263,7 +263,7 @@ export class RationalisationComponent {
           workbook.xlsx.writeBuffer().then(function(buffer:any) { 
               saveAs(new Blob([buffer], { type: "application/octet-stream" }), "Rationalise-Tags.xlsx"); 
           }); 
-      }); 
+      });
   } 
   else if (e.format === 'pdf') {
       const doc = new jsPDF({

@@ -40,7 +40,7 @@ export class OpcConfigurationComponent {
     private snackBar: MatSnackBar,
     private datePipe: DatePipe,
   ) {
-    this.sharedService.setPageName('OPC Configuration'); 
+    // this.sharedService.setPageName('OPC Configuration'); 
     this.OPCGrp = new FormGroup({
       server: new FormControl(''),
       opc_time: new FormControl('')

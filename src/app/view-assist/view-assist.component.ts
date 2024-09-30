@@ -32,4 +32,10 @@ export class ViewAssistComponent {
       reviewBy: "admin"
     }
   ];
+
+
+  ngOnInit() {
+    const storedData = localStorage.getItem('alrm_assists');
+    this.dataSource = storedData ? JSON.parse(storedData) : this.dataSource;
+  }
 }

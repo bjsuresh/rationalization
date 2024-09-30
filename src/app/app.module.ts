@@ -25,7 +25,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { TagSelectionComponent } from './tag-selection/tag-selection.component';
-import { DxButtonModule, DxDateBoxModule, DxFileUploaderModule, DxFormModule, DxPopupModule, DxTabsModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxDateBoxModule, DxFileUploaderModule, DxFormModule, DxLinearGaugeModule, DxPopupModule, DxTabsModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
 import { DxDataGridModule, DxCheckBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { UnapprovedRequestsComponent } from './unapproved-requests/unapproved-requests.component';
 import { ProposedTagsComponent } from './proposed-tags/proposed-tags.component';
@@ -57,6 +57,9 @@ import { OpcConfigurationComponent } from './opc-configuration/opc-configuration
 import { UsersComponent } from './users/users.component';
 import { MasterpageComponent } from './masterpage/masterpage.component';
 import { AddReviewComponent } from './add-review/add-review.component';
+import { HazardsComponent } from './hazards/hazards.component';
+import { TimeconsequencesComponent } from './timeconsequences/timeconsequences.component';
+import { PriorityIntervalsComponent } from './priority-intervals/priority-intervals.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +93,10 @@ import { AddReviewComponent } from './add-review/add-review.component';
     OpcConfigurationComponent,
     UsersComponent,
     MasterpageComponent,
-    AddReviewComponent
+    AddReviewComponent,
+    HazardsComponent,
+    TimeconsequencesComponent,
+    PriorityIntervalsComponent
    ],
   imports: [
     BrowserModule,
@@ -126,7 +132,8 @@ import { AddReviewComponent } from './add-review/add-review.component';
     DxTextAreaModule,
     DxDateBoxModule,
     HttpClientModule,
-    MatExpansionModule
+    MatExpansionModule,
+    DxLinearGaugeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenService, multi: true },

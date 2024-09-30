@@ -36,7 +36,7 @@ export class ApiService {
   }
 
   getUsers(){
-    return this.http.get(environment.apiUrl+'GetUsers');
+    return this.http.get(environment.changeManagementUrl+'GetUsers');
   }
 
   getUser(username:any){
@@ -62,149 +62,149 @@ export class ApiService {
 
   //Access Levels
   getAccessLevels(){
-    return this.http.get(environment.apiUrl+'GetAccessLevel');
+    return this.http.get(environment.changeManagementUrl+'GetAccessLevel');
   }
   
   updateAccessLevels(updateData:any) {
-    return this.http.post(environment.apiUrl + 'UpdateAccessLevel', updateData)
+    return this.http.post(environment.changeManagementUrl + 'UpdateAccessLevel', updateData)
   }
 
   //Tags Hierarchy
   getAllTags(){
-    return this.http.get(environment.apiUrl+'GetAllTags');
+    return this.http.get(environment.changeManagementUrl+'GetAllTags');
   }
 
   importTag(data:any){
-    return this.http.post(environment.apiUrl + 'ImportTags', data)
+    return this.http.post(environment.changeManagementUrl + 'ImportTags', data)
   }
 
   //Process Modes
   getProcessModes(){
-    return this.http.get(environment.apiUrl+'GetProcessModes');
+    return this.http.get(environment.changeManagementUrl+'GetProcessModes');
   }
 
   addProcesMode(data:any) {
-    return this.http.post(environment.apiUrl + 'AddProcessMode', data)
+    return this.http.post(environment.changeManagementUrl + 'AddProcessMode', data)
   }
 
   deleteProcessMode(data: any) {
     // let params = new HttpParams();
     // const id = params.append('UserId', userId);
-    return this.http.post(environment.apiUrl + 'DeleteProcessMode',data);
+    return this.http.post(environment.changeManagementUrl + 'DeleteProcessMode',data);
   }
 
   updateProcesssMode(data:any) {
     console.log("data",data);
-    return this.http.post(environment.apiUrl + 'UpdateProcessMode', data)
+    return this.http.post(environment.changeManagementUrl + 'UpdateProcessMode', data)
   }
 
   //Unassigned Tags
     getUnassignedTags(){
-      return this.http.get(environment.apiUrl+'GetUnAssignedTags');
+      return this.http.get(environment.changeManagementUrl+'GetUnAssignedTags');
     }
     getAssignedTags(){
-      return this.http.get(environment.apiUrl+'GetAssignedTags');
+      return this.http.get(environment.changeManagementUrl+'GetAssignedTags');
     }
     addSingleDesignValue(data:any) {
       console.log("data",data);
-      return this.http.post(environment.apiUrl + 'AddSingleDesignValue', data)
+      return this.http.post(environment.changeManagementUrl + 'AddSingleDesignValue', data)
     }
     importDesingValues(data:any){
-      return this.http.post(environment.apiUrl + 'ImportSingleDesignValue', data)
+      return this.http.post(environment.changeManagementUrl + 'ImportSingleDesignValue', data)
     }
     getWaitForApprovalTags() {
-      return this.http.get(environment.apiUrl + 'GetWaitForApprovalTags');
+      return this.http.get(environment.changeManagementUrl + 'GetWaitForApprovalTags');
     }
     approveTag(data:any) {
       console.log("data",data);
-      return this.http.post(environment.apiUrl + 'ApproveSingleDesignValue', data)
+      return this.http.post(environment.changeManagementUrl + 'ApproveSingleDesignValue', data)
     }
     disApproveTag(data:any){
-      return this.http.post(environment.apiUrl + 'DisApproveSingleDesignValue', data)
+      return this.http.post(environment.changeManagementUrl + 'DisApproveSingleDesignValue', data)
     }
 
     // OPCSettings
     getOPCSettings(){
-      return this.http.get(environment.apiUrl+'GetOPCSettings');
+      return this.http.get(environment.changeManagementUrl+'GetOPCSettings');
     }
     saveOPCSettings(data:any) {
-      return this.http.post(environment.apiUrl + 'SaveOPCSettings', data)
+      return this.http.post(environment.changeManagementUrl + 'SaveOPCSettings', data)
     }
     getOPCTagList(){
-      return this.http.get(environment.apiUrl+'GetOPCTagList');
+      return this.http.get(environment.changeManagementUrl+'GetOPCTagList');
     }
     getOPCServers(){
-      return this.http.get(environment.apiUrl+'GetOPCServers');
+      return this.http.get(environment.changeManagementUrl+'GetOPCServers');
     }
     getOpcStatus(){
-      return this.http.get(environment.apiUrl+'GetOpcStatus');
+      return this.http.get(environment.changeManagementUrl+'GetOpcStatus');
     }
     
     getOPCBlockedParamList(){
-      return this.http.get(environment.apiUrl+'GetOPCBlockedParamList');
+      return this.http.get(environment.changeManagementUrl+'GetOPCBlockedParamList');
     }
     addOPCBlockedParam(data:any) {
-      return this.http.post(environment.apiUrl + 'AddOPCBlockedParam', data)
+      return this.http.post(environment.changeManagementUrl + 'AddOPCBlockedParam', data)
     }
     deleteOPCBlockedParam(data: any) {
-      return this.http.post(environment.apiUrl + 'DeleteOPCBlockedParam',data);
+      return this.http.post(environment.changeManagementUrl + 'DeleteOPCBlockedParam',data);
     }
   
     getAllowedOpcTags(){
-      return this.http.get(environment.apiUrl+'GetAllowedOpcTags');
+      return this.http.get(environment.changeManagementUrl+'GetAllowedOpcTags');
     }
     addOpcTagtoAllowedList(data:any) {
-      return this.http.post(environment.apiUrl + 'AddOpcTagtoAllowedList', data)
+      return this.http.post(environment.changeManagementUrl + 'AddOpcTagtoAllowedList', data)
     }
     deleteOPCTagFromAllowedList(data: any) {
-      return this.http.post(environment.apiUrl + 'DeleteOPCTagFromAllowedList',data);
+      return this.http.post(environment.changeManagementUrl + 'DeleteOPCTagFromAllowedList',data);
     }
     
     getCompareView(){
-      return this.http.post(environment.apiUrl+'GetCompareView','');
+      return this.http.post(environment.changeManagementUrl+'GetCompareView','');
     }
     getDiscrepency(){
-      return this.http.post(environment.apiUrl+'GetDiscrepency','');
+      return this.http.post(environment.changeManagementUrl+'GetDiscrepency','');
     }
     getOPCView(){
-      return this.http.post(environment.apiUrl+'GetOPCView','');
+      return this.http.post(environment.changeManagementUrl+'GetOPCView','');
     }
     
 
     getChangeRequestDetails(){
-      return this.http.get(environment.apiUrl+'GetChangeRequestDetails');
+      return this.http.get(environment.changeManagementUrl+'GetChangeRequestDetails');
     }
     getChangeRequestDetailsDisApproved(){
-      return this.http.get(environment.apiUrl+'GetChangeRequestDetails_DisApproved');
+      return this.http.get(environment.changeManagementUrl+'GetChangeRequestDetails_DisApproved');
     }
     getChangeRequestDetailsPending(){
-      return this.http.get(environment.apiUrl+'GetChangeRequestDetails_Pending');
+      return this.http.get(environment.changeManagementUrl+'GetChangeRequestDetails_Pending');
     }
     getChangeRequestDetailsApproved(){
-      return this.http.get(environment.apiUrl+'GetChangeRequestDetails_Approved');
+      return this.http.get(environment.changeManagementUrl+'GetChangeRequestDetails_Approved');
     }
     
     addNewChangeRequest(data:any) {
-      return this.http.post(environment.apiUrl + 'AddNewChangeRequest', data)
+      return this.http.post(environment.changeManagementUrl + 'AddNewChangeRequest', data)
     }
     approveNewChangeRequest(data:any) {
-      return this.http.post(environment.apiUrl + 'ApproveNewChangeRequest', data)
+      return this.http.post(environment.changeManagementUrl + 'ApproveNewChangeRequest', data)
     }
     disApproveNewChangeRequest(data:any) {
-      return this.http.post(environment.apiUrl + 'DisApproveNewChangeRequest', data)
+      return this.http.post(environment.changeManagementUrl + 'DisApproveNewChangeRequest', data)
     }
     
     getAuditModules(){
-      return this.http.post(environment.apiUrl+'GetAuditModules','');
+      return this.http.post(environment.changeManagementUrl+'GetAuditModules','');
     }
     getAuditSubModules(){
-      return this.http.post(environment.apiUrl+'GetAuditSubModules','');
+      return this.http.post(environment.changeManagementUrl+'GetAuditSubModules','');
     }
     getAuditLogs(data:any){
-      return this.http.post(environment.apiUrl+'GetAuditLogs',data);
+      return this.http.post(environment.changeManagementUrl+'GetAuditLogs',data);
     }
     addNewAudit(data:any) {
-      return this.http.post(environment.apiUrl + 'AddNewAudit', data)
+      return this.http.post(environment.changeManagementUrl + 'AddNewAudit', data)
     }
 
 }

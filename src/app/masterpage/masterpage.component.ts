@@ -1,10 +1,12 @@
   import { Component, ViewChild } from '@angular/core';
-  import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+  import { FormArray, FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
   import { MatSnackBar } from '@angular/material/snack-bar';
   import { DxFormComponent } from 'devextreme-angular';
+import { PriorityIntervalsComponent } from '../priority-intervals/priority-intervals.component';
   
   @Component({
-    selector: 'app-masterpage',
+    selector: 'app-masterpage', 
     templateUrl: './masterpage.component.html',
     styleUrls: ['./masterpage.component.css']
   })
@@ -12,33 +14,37 @@
       @ViewChild(DxFormComponent, { static: false }) myform!: DxFormComponent;
     
       employee: FormGroup;
+      filterGrp: FormGroup;
       cause_of_alarm: any;
       // causeAlarmItems: any[]=[];
       selectTabIndex:number = 0;
+      selectEvntTabIndex: number = 0;
       popupPosition: any;
   
       tagsList:any[] = [];
       parameters:any[] = [];
     
-      constructor(private fb: FormBuilder,private snackBar: MatSnackBar) {
+      constructor(private fb: FormBuilder,private snackBar: MatSnackBar,private dialog: MatDialog) {
         this.employee = this.fb.group({
-          DCS_Tag: new FormControl('' ),
-          Event_Type: new FormControl(''),
-          // causeAlarmItems: this.fb.array([]),
-          causeAlarmItems: this.fb.array([]),
-          consequenceAlarmItems: this.fb.array([
-    
-          ]),
-          operatorResItems: this.fb.array([
-    
-          ]),
-          time: new FormControl(''),
+          DCS_Tag: new FormControl('',Validators.required),
+          type: new FormControl('',Validators.required),
+          PRTENo: new FormControl('',Validators.required),
+          comments: new FormControl('',Validators.required),
+          screen: new FormControl(''),
           EffTime: new FormControl(''),
-          comments: new FormControl(''),
-          reviewDate: new FormControl(''),
-          reviewBy: new FormControl('')
+          reviewDate: new FormControl('',Validators.required),
+          reviewBy: new FormControl('',Validators.required),
+          reviewPriority: new FormControl(''),
+          ruleDate: new FormControl('',Validators.required),
+          ruleApplied: new FormControl('')
         });
-    
+        this.filterGrp = this.fb.group({
+          loop_no: new FormControl('' ),
+          platform: new FormControl('' ),
+          system: new FormControl('' ),
+          pid: new FormControl('' ),
+          cause_effect: new FormControl('')
+        });
         let arr = localStorage.getItem("TagsList");
         if(arr){
           const array = JSON.parse(arr);
@@ -65,30 +71,39 @@
       get causeAlarmItems(): FormArray {
         return this.employee.get('causeAlarmItems') as FormArray;
       }
-    
+      formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const month = monthNames[date.getMonth()];
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${day}-${month}-${year}`;
+      }  
       save(){
         if (this.employee.valid) {
           const formData = this.employee.value;
           
           let data = {
           "tag": formData.DCS_Tag,
-          "EffTime": formData.EffTime,
-          "type": formData.Event_Type,
-          "cause_of_alarm": [formData.causeAlarmItems],
+          "type": formData.type,
+          "PRTENo": [formData.PRTENo],
           "comments": formData.comments,
-          "consequence_of_alarm": [formData.consequenceAlarmItems],
-          "operator_response": [formData.operatorResItems],
+          "screen": [formData.screen],
+          "EffTime": formData.EffTime,
+          "reviewPriority": [formData.reviewPriority],
           "reviewBy": formData.reviewBy,
-          "reviewDate": formData.reviewDate,
-          "time": formData.time
+          "reviewDate": this.formatDate(formData.reviewDate),
+          "ruleDate": this.formatDate(formData.ruleDate),
+          "ruleApplied": formData.ruleApplied,
+          "id": this.getIdNo() 
           }
-      
+
           console.log("fd",formData, data);
-          this.snackBar.open('Alarm Assist added Successfully','',{
+          this.reviews.push(data);
+          this.snackBar.open('Alarm Review added Successfully','',{
             duration: 1000
           });
           this.selectTabIndex = 1;
-          // this.saveDataToLocalStorage();
+          this.saveDataToLocalStorage();
           this.employee.reset();
         }
       }
@@ -103,7 +118,10 @@
       isShowOperatorResPopup: boolean = false;
       isShowAlrmRevsPopup: boolean = false;
       isShowChangeNotesPopup: boolean = false;
-      
+      isShowOperatorResEditPopup: boolean = false;
+      isShowExtDataPopup: boolean = false;
+      isShowPrityPopup: boolean = false;
+
       createDefaultControl(data: any): FormGroup {
         return this.fb.group({
           "cause_of_alarm": data.cause_of_alarm
@@ -170,17 +188,14 @@
       ];
       evntTrtsDatasource : any[] = [
         {
-          id:1,
           type: "PVHI",
           treatno: 42
         },
         {
-          id:2,
           type: "PVHI",
           treatno: 0
         },
         {
-          id:3,
           type: "PVHI",
           treatno: 2
         },
@@ -241,6 +256,7 @@
           dir: ""
         },
       ];
+      platforms: any[] = ["platfrom1","platform2","platform3"];
       systems: any[] = [
         {
           id:1,
@@ -267,7 +283,7 @@
       alarms: any[] =[
         {
           id:1,
-          alarmName:"alarmm1"
+          alarmName:"alarm1"
         },
         {
           id:2,
@@ -289,24 +305,32 @@
       responses: any[] =[
         {
           id:1,
-          comments:"alarmm1"
+          responses:"Verify automatic action can be taken"
         },
         {
           id:2,
-          comments:"alarm2"
+          responses:"If no reply 3 mins then executive action initiate to shutdown"
         },
         {
           id:3,
-          comments:"alarm3"
+          responses:"If device inhibited removed to initiate shutdown"
+        },
+        {
+          id:4,
+          responses:"If alarm genuine or Area operator cannot be contacted, activate GPA"
+        },
+        {
+          id:5,
+          responses:"If another gas detector activates, initiate ESO, GPA immediately"
         }
-      ];
+      ]
       reviews: any[] =[
         {
           id:1,
           tag:"10FIC01",
           type: "PVHI",
           PRTENo: "2",
-          reviewers:"user1,user2",
+          reviewBy:"user1",
           reviewDate:"23-05-24",
           comments: "review good rating and performance"
         },
@@ -315,7 +339,7 @@
           tag:"10FIC02",
           type: "PVHI",
           PRTENo: "2",
-          reviewers:"user1,user2",
+          reviewBy:"user2",
           reviewDate:"23-05-24",
           comments: "review good rating and performance"
         },
@@ -324,7 +348,7 @@
           tag:"10FIC03",
           type: "PVHI",
           PRTENo: "2",
-          reviewers:"user1,user2",
+          reviewBy:"user1",
           reviewDate:"23-05-24",
           comments: "review good rating and performance"
         }
@@ -332,15 +356,19 @@
       notes: any[] =[
         {
           id:1,
-          notes:"alarm1"
+          notes:"Tag reference document number is 007A12"
         },
         {
           id:2,
-          notes:"alarm2"
+          notes:"changed by user1"
         },
         {
           id:3,
-          notes:"alarm3"
+          notes:"priority value was change by user2"
+        },
+        {
+          id:4,
+          notes: "Tag reference document number is 112A05"
         }
       ];
       systemPopup(){ 
@@ -352,22 +380,96 @@
       responsePopup(){ 
         this.isShowOperatorResPopup = true;
       }
+      editResponsePopup(){
+        this.isShowOperatorResEditPopup = true;
+      }
+      externalData(){
+        this.isShowExtDataPopup = true;
+      }
+      assessPriority(){
+        this.isShowPrityPopup = true;
+      }
       alrmReviewsPopup(){ 
+        const storedData2= localStorage.getItem('reviews');
+        this.reviews = storedData2 ? JSON.parse(storedData2) : this.reviews;
         this.isShowAlrmRevsPopup = true;
       }
       changeNotesPopup(){ 
         this.isShowChangeNotesPopup = true;
       }
+      customizeColumns(columns: any) {
+        const customColumn = {
+          caption: 'Safe Operating Envelope', // Caption for the column header
+          cellTemplate: 'customCellTemplate',
+          cssClass: 'custom-column-header' // Specifies a custom cell template for the column
+        };
+
+        columns.unshift(customColumn);
+      }
+      openDialog(data:any) {
+        const name=data.row.data;
+        console.log('Editing row:', data, name);
+
+        this.dialog.open(PriorityIntervalsComponent, {
+          // width: '40%',
+          height: '90%',
+          data: {
+            value: name,
+          },
+        });
+      }
 
       ngOnInit() {
-        const storedData = localStorage.getItem('alrm_assists');
-        // this.dataSource = storedData ? JSON.parse(storedData) : this.dataSource;
+        const storedData = localStorage.getItem('tagDataSource');
+        this.tagDataSource = storedData ? JSON.parse(storedData) : this.tagDataSource;
+        const storedData1= localStorage.getItem('eventsDataSource');
+        this.eventsDataSource = storedData1 ? JSON.parse(storedData1) : this.eventsDataSource;
+        const storedData2= localStorage.getItem('reviews');
+        this.reviews = storedData2 ? JSON.parse(storedData2) : this.reviews;
       }
     
-      // saveDataToLocalStorage() {
-      //   console.log("alrm_assists",this.dataSource);
-      //   const dataToSave = JSON.stringify(this.dataSource);
-      //   localStorage.setItem('alrm_assists', dataToSave);
-      // }
+      saveDataToLocalStorage() {
+        console.log("reviews",this.reviews);
+        const dataToSave = JSON.stringify(this.reviews);
+        localStorage.setItem('reviews', dataToSave);
+
+        const eventsdata = JSON.stringify(this.eventsDataSource);
+        localStorage.setItem('eventsDataSource', eventsdata);
+      }
+      getIdNo(): number {
+        const maxIndex = this.reviews.reduce((max, item) => Math.max(max, +item.id), 0);
+        return maxIndex + 1;
+      }
+      addEvent(event: any) {
+        const newId = this.getEvntsIdNo();
+        event.data.id = newId;
+      }
+    
+      onRowInserted(event: any) {
+        // this.eventsDataSource.push(event.data); // Add the new data to the data source
+        console.log("adds", event.data.value, event.data);
+        this.saveDataToLocalStorage();
+      }
+    
+      updateEvent(event: any) {
+        const id = event.key;
+        const updatedData = { ...event.oldData, ...event.newData };
+        const index = this.eventsDataSource.findIndex(item => item.id === id);
+        if (index !== -1) {
+          this.eventsDataSource[index] = updatedData;
+        }
+        this.saveDataToLocalStorage();
+        console.log("updatedData", updatedData);
+      }
+      getEvntsIdNo(): number {
+        const maxIndex = this.eventsDataSource.reduce((max, item) => Math.max(max, +item.id), 0);
+        return maxIndex + 1;
+      }
+      deleteEvent(event:any){
+        console.log("efvt",event.data)
+        const deletedId = event.data.id;
+        this.eventsDataSource = this.eventsDataSource.filter(item => item.id !== deletedId);
+        this.saveDataToLocalStorage();
+      }
     
     }

@@ -24,12 +24,14 @@ export class HomeComponent {
     // { name: 'Link 4', url: '/link4', isActive: false }
   ];
   PageName: any;
+  userName: any;
 
   constructor(private sharedService: SharedService,
     private apiService: ApiService
     ) {}
 
   ngOnInit() {
+    this.userName = localStorage.getItem('userName');
     this.sharedService.pageName$.subscribe((pageName) => {
       this.PageName = pageName;
     });

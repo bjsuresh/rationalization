@@ -22,7 +22,7 @@
       private location: Location,
       private datePipe: DatePipe
     ) {
-      this.sharedService.setPageName('User Management'); 
+      // this.sharedService.setPageName('User Management'); 
       this.passwordCellTemplate = (container: any, options: any) => {
         container.innerHTML = this.isEditing ? '<input type="password" [(ngModel)]="options.data.UserPass" />' : '******';
       };

@@ -80,3 +80,18 @@
   justify-content: space-around;
   margin: 10px 0px;
 }
+
+.filter-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.04);
+  margin: 15px 0px;
+}
+.filter-card .dx-field {
+  margin: 0px !important;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,27 @@
+<dx-linear-gauge class="lineargauge-sec" id="gauge" [value]="setPoint" >
+    <dxo-subvalue-indicator [offset]="-5"></dxo-subvalue-indicator>
+    <!-- <dxo-value-indicator [offset]="20"></dxo-value-indicator> -->
+    <dxo-value-indicator type="textCloud" [offset]="12" color="#483D8B" [width]="15" [height]="10"> </dxo-value-indicator>
+    <dxo-geometry orientation="vertical"></dxo-geometry>
+    <dxo-range-container [offset]="10" [width]="20">
+      <dxi-range [startValue]="0" [endValue]="10" color="#8ccde8"></dxi-range>
+      <dxi-range [startValue]="10" [endValue]="20" color="#d01515"></dxi-range>
+      <dxi-range [startValue]="20" [endValue]="30" color="#fbb940"></dxi-range>
+      <dxi-range [startValue]="30" [endValue]="40" color="#e9e92b"></dxi-range>
+      <dxi-range [startValue]="40" [endValue]="50" color="#0f6f0f"></dxi-range>
+      <dxi-range [startValue]="50" [endValue]="60" color="#0f6f0f"></dxi-range>
+      <dxi-range [startValue]="60" [endValue]="70" color="#e9e92b"></dxi-range>
+      <dxi-range [startValue]="70" [endValue]="80" color="#fbb940"></dxi-range>
+      <dxi-range [startValue]="80" [endValue]="90" color="#d01515"></dxi-range>
+      <dxi-range [startValue]="90" [endValue]="100" color="#8ccde8"></dxi-range>
+    </dxo-range-container>
+    <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="10">
+      <dxo-tick color="#536878"></dxo-tick>
+      <dxo-label [indentFromTick]="-3" [customizeText]="customizeLabelText"></dxo-label>
+    </dxo-scale>
+    <dxo-export [enabled]="true"></dxo-export>
+    <dxo-title text="Safe Operating Envelope">
+      <dxo-font [size]="20"></dxo-font>
+    </dxo-title>
+    <dxo-size [height]="600"></dxo-size>
+</dx-linear-gauge>

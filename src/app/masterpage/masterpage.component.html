@@ -1,6 +1,51 @@
 <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectTabIndex">
   
     <mat-tab label="Master Data">
+      <div class="filter-card" [formGroup]="filterGrp">
+        <div class="dx-field">
+          <div class="dx-field-label">Loop No</div>
+          <div class="dx-field-value">
+            <dx-text-box formControlName="loop_no"
+            ></dx-text-box>
+          </div>
+        </div>  
+        <div class="dx-field">
+          <div class="dx-field-label">Platform</div>
+          <div class="dx-field-value">
+            <dx-select-box
+            [dataSource]="platforms"
+            searchMode="contains"
+            [searchTimeout]="200"
+            [minSearchLength]="0"
+            [searchEnabled]="true"
+            [showDataBeforeSearch]="true" formControlName="platform"
+          ></dx-select-box>
+          </div>
+        </div> 
+        <div class="dx-field">
+          <div class="dx-field-label">System</div>
+          <div class="dx-field-value">
+            <dx-text-box formControlName="system"
+            ></dx-text-box>
+          </div>
+        </div> 
+        <div class="dx-field">
+          <div class="dx-field-label">PID</div>
+          <div class="dx-field-value">
+            <dx-text-box formControlName="pid"
+            ></dx-text-box>
+          </div>
+        </div> 
+        <div class="dx-field">
+          <div class="dx-field-label">Cause Effect</div>
+          <div class="dx-field-value">
+            <dx-text-box formControlName="cause_effect"
+            ></dx-text-box>
+          </div>
+        </div> 
+        <!-- <button mat-raised-button color="primary">Filter</button> -->
+      </div>
+
       <div class="grp1">
           <div class="title">DCS Tags</div>
           <dx-data-grid
@@ -15,7 +60,6 @@
           >
           <dxo-filter-panel [visible]="true"></dxo-filter-panel>
           <dxo-filter-builder
-            
             [allowHierarchicalFields]="true"
           >
           </dxo-filter-builder>
@@ -55,15 +99,14 @@
       
           </dx-data-grid>    
       </div>
-      <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectTabIndex">
+      <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" [selectedIndex]="selectEvntTabIndex">
         <mat-tab label="Events">
           <div class="sec2">
             <div class="example-button-row">
               <button mat-stroked-button (click)="systemPopup()">Show System</button>
-              <button mat-stroked-button (click)="alarmPopup()" color="primary">Show Alarms</button>
-              <button mat-stroked-button (click)="responsePopup()" color="accent">Operator Response</button>
-              <button mat-stroked-button (click)="alrmReviewsPopup()" color="warn">Alarm Reviews</button>
-              <button mat-stroked-button (click)="changeNotesPopup()" color="warn">Show Change Notes</button>
+              <button mat-stroked-button (click)="alarmPopup()">Show Alarms</button>
+              <button mat-stroked-button (click)="responsePopup()">Operator Response</button>
+              <button mat-stroked-button (click)="alrmReviewsPopup()">Alarm Reviews</button>
             </div>
             <dx-data-grid
             id="gridContainer"
@@ -72,7 +115,33 @@
             [allowColumnResizing]="true"
             [columnAutoWidth]="true"
             [dataSource]="eventsDataSource"
-            [showBorders]="true"                   >
+            [showBorders]="true"  
+            (onRowInserting)="addEvent($event)" 
+            (onRowInserted)="onRowInserted($event)" 
+            (onRowUpdating)="updateEvent($event)"
+            (onRowRemoving)="deleteEvent($event)"
+            [customizeColumns]="customizeColumns"
+            >
+            <dxi-column dataField="type" caption="Type"></dxi-column>
+            <dxi-column dataField="qualifier" caption="Qualifier"></dxi-column>
+            <dxi-column dataField="property" caption="Property"></dxi-column>
+            <dxi-column dataField="ON_text" caption="ON_text" ></dxi-column>
+            <dxi-column dataField="OFF_text" caption="OFF_text" ></dxi-column>
+            <dxi-column dataField="Set_Point" caption="Set_Point" ></dxi-column>
+            <dxi-column dataField="Priority" caption="Priority" ></dxi-column>
+            <dxi-column dataField="treatno" caption="treatno" ></dxi-column>
+            <dxi-column dataField="PRTEno" caption="PRTEno" ></dxi-column>
+            <dxi-column dataField="Enabled" caption="Enabled" ></dxi-column>
+            <dxi-column dataField="Active" caption="Active" ></dxi-column>
+            <dxi-column dataField="Blocked" caption="Blocked" ></dxi-column>
+            <dxi-column dataField="Ext_SP" caption="Ext_SP" ></dxi-column>
+            <dxi-column dataField="EngUnits" caption="EngUnits" ></dxi-column>
+            <dxi-column dataField="dir" caption="dir" ></dxi-column>
+            <dxo-templates>
+              <div *dxTemplate="let data of 'customCellTemplate'" style="text-align: center;">
+                  <mat-icon (click)="openDialog(data)">list</mat-icon>
+              </div>
+          </dxo-templates>                                                                                            
             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
             <dxo-search-panel [visible]="true"></dxo-search-panel>
             <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
@@ -95,15 +164,31 @@
                 [allowDeleting]="true"
                 [useIcons]="true"
                 >
-                <!-- <dxo-form >
-                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
-                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
-                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
-                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
-                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
-                </dxo-form> -->
+                <dxo-form >
+                    <dxi-item dataField="type" caption="type" ></dxi-item>
+                    <dxi-item dataField="qualifier" caption="qualifier" ></dxi-item>
+                    <dxi-item dataField="property" caption="property" ></dxi-item>
+                    <dxi-item dataField="ON_text" caption="ON_text" ></dxi-item>
+                    <dxi-item dataField="OFF_text" caption="OFF_text" ></dxi-item>
+                    <dxi-item dataField="Set_Point" caption="Set_Point" ></dxi-item>
+                    <dxi-item dataField="Priority" caption="Priority" ></dxi-item>
+                    <dxi-item dataField="treatno" caption="treatno" ></dxi-item>
+                    <dxi-item dataField="PRTEno" caption="PRTEno" ></dxi-item>
+                    <dxi-item dataField="Enabled" caption="Enabled" ></dxi-item>
+                    <dxi-item dataField="Active" caption="Active" ></dxi-item>
+                    <dxi-item dataField="Blocked" caption="Blocked" ></dxi-item>
+                    <dxi-item dataField="Ext_SP" caption="Ext_SP" ></dxi-item>
+                    <dxi-item dataField="EngUnits" caption="EngUnits" ></dxi-item>
+                    <dxi-item dataField="dir" caption="dir" ></dxi-item>
+                </dxo-form>
             </dxo-editing>
             </dx-data-grid>        
+            <div class="example-button-row">
+              <button mat-stroked-button (click)="changeNotesPopup()">Show Change Notes</button>
+              <button mat-stroked-button (click)="editResponsePopup()">Edit Operator Response</button>
+              <button mat-stroked-button (click)="externalData()">Edit External Data</button>
+              <button mat-stroked-button (click)="assessPriority()">Assess Priority</button>
+            </div>
           </div>
 
           <dx-popup 
@@ -121,7 +206,8 @@
             [allowColumnResizing]="true"
             [columnAutoWidth]="true"
             [dataSource]="systems"
-            [showBorders]="true"                   >
+            [showBorders]="true">
+            <dxi-column dataField="systemName" caption="System Name" dataType="string" ></dxi-column>
             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
             <dxo-search-panel [visible]="true"></dxo-search-panel>
             <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
@@ -163,7 +249,8 @@
             [allowColumnResizing]="true"
             [columnAutoWidth]="true"
             [dataSource]="alarms"
-            [showBorders]="true"                   >
+            [showBorders]="true">
+            <dxi-column dataField="alarmName" caption="Alarm Name" dataType="string" ></dxi-column>
             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
             <dxo-search-panel [visible]="true"></dxo-search-panel>
             <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
@@ -190,7 +277,7 @@
             </dx-data-grid>        
           </div>
           </dx-popup>
-          <dx-popup 
+          <dx-popup v
           [(visible)]="isShowOperatorResPopup"
           [title]="'Operator Responses'"
           [width]="500"
@@ -226,6 +313,48 @@
               [allowUpdating]="false"
               [allowAdding]="false"
               [allowDeleting]="false"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowOperatorResEditPopup"
+          [title]="'Operator Responses'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+            <dx-data-grid
+            id="gridContainer"
+            keyExpr="id"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="responses"
+            [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="true"
+              [allowAdding]="false"
+              [allowDeleting]="true"
               [useIcons]="true"
               >
             </dxo-editing>
@@ -316,18 +445,72 @@
             </dx-data-grid>        
           </div>
           </dx-popup>
-
-        </mat-tab>
-        <mat-tab label="Event Treatments">
-          <div class="sec1">
+          <dx-popup 
+          [(visible)]="isShowExtDataPopup"
+          [title]="'External Data'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
             <dx-data-grid
             id="gridContainer"
             keyExpr="id"
             [allowColumnReordering]="true"
             [allowColumnResizing]="true"
             [columnAutoWidth]="true"
-            [dataSource]="evntTrtsDatasource"
+            [dataSource]="notes"
             [showBorders]="true"                   >
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="[5, 10, 'all']"
+                displayMode="full"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-editing
+              mode="popup"
+              [allowUpdating]="true"
+              [allowAdding]="false"
+              [allowDeleting]="true"
+              [useIcons]="true"
+              >
+            </dxo-editing>
+            </dx-data-grid>        
+          </div>
+          </dx-popup>
+          <dx-popup 
+          [(visible)]="isShowPrityPopup"
+          [title]="'Assess Priority'"
+          [width]="500"
+          [height]="400"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="false">
+          <div>
+
+          </div>
+          </dx-popup>
+
+        </mat-tab>
+        <mat-tab label="Event Treatments">
+          <div class="sec1" style="display: flex;justify-content: center;">
+            <dx-data-grid
+            id="gridContainer"
+            [allowColumnReordering]="true"
+            [allowColumnResizing]="true"
+            [columnAutoWidth]="true"
+            [dataSource]="evntTrtsDatasource"
+            [showBorders]="true"
+            width="300"
+            >
             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
             <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
             <dxo-sorting mode="multiple"></dxo-sorting>
@@ -350,11 +533,8 @@
                 [useIcons]="true"
                 >
                 <dxo-form >
-                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
-                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
-                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
-                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
-                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
+                    <dxi-item dataField="type" caption="Type" ></dxi-item>
+                    <dxi-item dataField="treatno" caption="Treatno" ></dxi-item>
                 </dxo-form>
             </dxo-editing>          
             </dx-data-grid>        
@@ -377,14 +557,14 @@
                           <td colspan="1">Event_Type</td>
                           <td colspan="2">
                             <!-- <dx-text-box [inputAttr]="{ 'aria-label': 'Event Type' }" formControlName="Event_Type"></dx-text-box> -->
-                            <dx-select-box [items]="parameters"  [inputAttr]="{ 'aria-label': 'Event_Type' }"  formControlName="Event_Type"></dx-select-box>
+                            <dx-select-box [items]="parameters"  [inputAttr]="{ 'aria-label': 'Event_Type' }"  formControlName="type"></dx-select-box>
                           </td>
                       </tr>
                       <tr rowspan="6">
                           <td colspan="1">PRTENo</td>
                           <td colspan="2">
-                            <dx-text-box [inputAttr]="{ 'aria-label': 'DCS Tag' }" formControlName="DCS_Tag"></dx-text-box>
-                            <!-- <dx-select-box [items]="tagsList" (onValueChanged)="onValChanged($event)" [inputAttr]="{ 'aria-label': 'DCS_Tag' }"  formControlName="DCS_Tag"></dx-select-box> -->
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'DCS Tag' }" formControlName="PRTENo"></dx-text-box>
+                            <!-- <dx-select-box [items]="tagsList" (onValueChanged)="onValChanged($event)" [inputAttr]="{ 'aria-label': 'DCS_Tag' }"  formControlName="PRTENo"></dx-select-box> -->
                           </td>
                           <td colspan="1">reviewDate</td>
                           <td colspan="2">
@@ -399,13 +579,13 @@
                           </td>
                           <td colspan="1">Screen</td>
                           <td colspan="2">
-                              <dx-text-box [inputAttr]="{ 'aria-label': 'Screen' }" formControlName="reviewBy"></dx-text-box>
+                              <dx-text-box [inputAttr]="{ 'aria-label': 'Screen' }" formControlName="screen"></dx-text-box>
                           </td>  
                       </tr>
                       <tr rowspan="6">
                         <td colspan="1">Review Priority</td>
                         <td colspan="2">
-                          <dx-text-box [inputAttr]="{ 'aria-label': 'time' }" formControlName="time"></dx-text-box>
+                          <dx-text-box [inputAttr]="{ 'aria-label': 'time' }" formControlName="reviewPriority"></dx-text-box>
                         </td>
                         <td colspan="1">New Treatment</td>
                         <td colspan="2">
@@ -416,11 +596,11 @@
                           <td colspan="1">Rule Date</td>
                           <td colspan="2">
                             <dx-date-box
-                            type="date" [inputAttr]="{ 'aria-label': 'reviewDate' }" formControlName="reviewDate"></dx-date-box>
+                            type="date" [inputAttr]="{ 'aria-label': 'ruleDate' }" formControlName="ruleDate"></dx-date-box>
                           </td>
                           <td colspan="1">Rule Applied</td>
                           <td colspan="2">
-                            <dx-text-box [inputAttr]="{ 'aria-label': 'reviewBy' }" formControlName="reviewBy"></dx-text-box>
+                            <dx-text-box [inputAttr]="{ 'aria-label': 'ruleApplied' }" formControlName="ruleApplied"></dx-text-box>
                           </td>
                       </tr> 
                       <tr rowspan="6">
@@ -431,7 +611,7 @@
                       </tr>
                       </table>
                       <div class="save_btn">
-                        <button mat-button mat-raised-button color="primary" (click)="save()">Save</button>
+                        <button mat-button mat-raised-button color="primary" (click)="save()" [disabled]="!employee.valid">Save</button>
                       </div>
                   </td>
               </tr>

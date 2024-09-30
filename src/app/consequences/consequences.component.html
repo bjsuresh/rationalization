@@ -8,26 +8,33 @@ keyExpr="id"
 (onRowInserted)="addConsequence($event)" 
 (onRowUpdating)="updateConsequence($event)"
 (onRowRemoving)="deleteConsequence($event)"
+(onExporting)="exportGrid($event)"
+>
+    <dxo-export [enabled]="false" [allowExportSelectedData]="false"></dxo-export>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+        [visible]="true"
+        [allowedPageSizes]="[5, 10, 'all']"
+        displayMode="full"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+    >
+    </dxo-pager>
+    <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']" ></dxo-export>
+    <dxi-column dataField="ConsequenceName" caption="Consequence Name" dataType="string" ></dxi-column>
+    <dxi-column dataField="ImpactName" caption="ImpactName" width="100">
+        <dxo-lookup [dataSource]="impacts" displayExpr="ImpactName" valueExpr="ImpactName">
+        </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="Size" caption="Size" dataType="string" width="80">
+        <dxo-lookup [dataSource]="sizes">
+        </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="Numeric_measure" caption="Numeric measure" dataType="string" width="100"></dxi-column>
 
->
-<dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
-<dxo-sorting mode="multiple"></dxo-sorting>
-<dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-<dxo-paging [pageSize]="10"> </dxo-paging>
-<dxo-pager
-    [visible]="true"
-    [allowedPageSizes]="[5, 10, 'all']"
-    displayMode="full"
-    [showPageSizeSelector]="true"
-    [showInfo]="true"
-    [showNavigationButtons]="true"
->
-</dxo-pager>
-<dxi-column dataField="ConsequenceName" caption="Consequence Name" dataType="string" ></dxi-column>
-<dxi-column dataField="ImpactName" caption="ImpactName">
-    <dxo-lookup [dataSource]="impacts" displayExpr="ImpactName" valueExpr="ImpactName">
-    </dxo-lookup>
-</dxi-column>
     <dxo-editing
         mode="popup"
         [allowUpdating]="true"
@@ -41,6 +48,10 @@ keyExpr="id"
                 <dxo-lookup [dataSource]="impacts" displayExpr="ImpactName" valueExpr="id">
                 </dxo-lookup>
             </dxi-item>
+            <dxi-item dataField="Size" caption="Size">
+                <dxo-lookup [dataSource]="sizes">
+                </dxo-lookup>
+            </dxi-item>
         </dxo-form>
         <dxo-popup
             title="Consequence"
@@ -49,7 +60,5 @@ keyExpr="id"
             [height]="250"
         >
         </dxo-popup>
-        
     </dxo-editing>
-
 </dx-data-grid>

@@ -39,8 +39,8 @@ export class OperatoralrmAssistComponent {
 
   constructor(private fb: FormBuilder,private snackBar: MatSnackBar) {
     this.employee = this.fb.group({
-      DCS_Tag: new FormControl('' ),
-      Event_Type: new FormControl(''),
+      DCS_Tag: new FormControl('',Validators.required),
+      Event_Type: new FormControl('',Validators.required),
       // causeAlarmItems: this.fb.array([]),
       causeAlarmItems: this.fb.array([]),
       consequenceAlarmItems: this.fb.array([
@@ -49,11 +49,11 @@ export class OperatoralrmAssistComponent {
       operatorResItems: this.fb.array([
 
       ]),
-      time: new FormControl(''),
-      EffTime: new FormControl(''),
-      comments: new FormControl(''),
-      reviewDate: new FormControl(''),
-      reviewBy: new FormControl('')
+      time: new FormControl('',Validators.required),
+      EffTime: new FormControl('',Validators.required),
+      comments: new FormControl('',Validators.required),
+      reviewDate: new FormControl('',Validators.required),
+      reviewBy: new FormControl('',Validators.required)
     });
 
     let arr = localStorage.getItem("TagsList");
@@ -87,22 +87,33 @@ export class OperatoralrmAssistComponent {
       "tag": formData.DCS_Tag,
       "EffTime": formData.EffTime,
       "type": formData.Event_Type,
-      "cause_of_alarm": [formData.causeAlarmItems],
+      "cause_of_alarm": formData.causeAlarmItems,
       "comments": formData.comments,
-      "consequence_of_alarm": [formData.consequenceAlarmItems],
-      "operator_response": [formData.operatorResItems],
+      "consequence_of_alarm": formData.consequenceAlarmItems,
+      "operator_response": formData.operatorResItems,
       "reviewBy": formData.reviewBy,
       "reviewDate": formData.reviewDate,
       "time": formData.time
       }
   
       console.log("fd",formData, data);
-      this.dataSource.push(data);
       this.snackBar.open('Alarm Assist added Successfully','',{
         duration: 1000
       });
-      this.selectTabIndex = 1;
-      this.saveDataToLocalStorage();
+      // this.saveDataToLocalStorage();    
+      const isDuplicate = this.dataSource.some(entry => entry.tag.toLowerCase() === data.tag.toLowerCase());
+      if(!isDuplicate){  
+        this.selectTabIndex = 1;  
+        console.log("is Not Duplicate");
+        this.dataSource.push(data);
+        this.saveDataToLocalStorage();    
+      }
+      else {
+        console.log("is Duplicate");
+        this.snackBar.open('This Dcs_Tag was already added!','',{
+          duration: 3000
+        });  
+      }
       this.employee.reset();
     }
   }
@@ -230,4 +241,5 @@ export class OperatoralrmAssistComponent {
   }
 
   }
+
 }

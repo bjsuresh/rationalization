@@ -1,355 +1,434 @@
-<div class="btn_grp">
-   <h2 mat-dialog-title>Priority Assist</h2>
-    <div class="">
-        <button mat-raised-button color="primary" (click)="openImpactsDialog()">Impacts</button>        
-        <button mat-raised-button color="primary" (click)="openConsequencesDialog()">Consequences</button>
-        <button mat-raised-button color="primary" (click)="openCostfigDialog()">Cost figures</button>
-        <button mat-raised-button color="primary" (click)="openRespondTimeDialog()">Respond Time</button>
-    </div>
-</div>
 
-    <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" >
-        <mat-tab label="Severity Form">
-            <div class="grp1">
-                <div class="title">Safety Consequences</div>
-                <dx-data-grid
-                id="gridContainer"
-                keyExpr="id"
-                [allowColumnReordering]="true"
-                [allowColumnResizing]="true"
-                [columnAutoWidth]="true"
-                [dataSource]="safetyDataSource"
-                [showBorders]="true"       
-                (onCellClick)="onCellClick($event)"
-                (onRowInserted)="addSeverity($event)" 
-                (onRowUpdating)="updateSeverity($event)"
-                (onRowRemoving)="deleteSeverity($event)"
-                >
-                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
-    
-                <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
-                <dxo-sorting mode="multiple"></dxo-sorting>
-                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                <dxo-paging [pageSize]="10"> </dxo-paging>
-                <dxo-pager
-                    [visible]="true"
-                    [allowedPageSizes]="[5, 10, 'all']"
-                    displayMode="full"
-                    [showPageSizeSelector]="true"
-                    [showInfo]="true"
-                    [showNavigationButtons]="true"
-                >
-                </dxo-pager>
-                <!-- <dxi-column dataField="ImpactName" caption="Impact Names" dataType="string" ></dxi-column> -->
-                <!-- <dxi-column dataField="Impact" caption="ImpactName" [fixed]="true"></dxi-column> -->
-                <dxi-column dataField="severity_low" caption="Low">
-                    <dxo-lookup [dataSource]="safetyCons" displayExpr="ConsequenceName" valueExpr="id" >
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_medium" caption="Medium">
-                    <dxo-lookup [dataSource]="safetyCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_large" caption="Large">
-                    <dxo-lookup [dataSource]="safetyCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_severe" caption="Very Large">
-                    <dxo-lookup [dataSource]="safetyCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-    
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowAdding]="true"
-                    [allowDeleting]="true"
-                    [useIcons]="true"
-                    >
-                    <dxo-form >
-                        <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
-                        <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
-                        <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
-                        <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
-                        <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
-                    </dxo-form>
-                </dxo-editing>
-            
-                </dx-data-grid>    
+<mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" >
+    <mat-tab label="Method1" class="">
+        <div class="btn_grp">
+            <h2 mat-dialog-title>Priority Assist</h2>
+             <div class="">
+                 <button mat-raised-button color="primary" (click)="openHazardsDialog()">Hazards</button>        
+                 <button mat-raised-button color="primary" (click)="openTTCDialog()">Time to Consequence</button>
+                 <button mat-button mat-raised-button color="primary" (click)="openPI()" style="margin-right: 10px;">Priority Intervals</button>
+             </div>
+        </div>
+        <dx-popup 
+        [(visible)]="isOpenInterval"
+        [title]="'Alarm Priority Intervals'"
+        [width]="500"
+        [height]="380"
+        [dragEnabled]="true"
+        [closeOnOutsideClick]="true">
+            <div class="interval-inputs">
+                <div *ngFor="let priority of alarmPriorities" class="sec">
+                <label>{{ priority.priority }} Interval: </label>
+                <input type="number" [(ngModel)]="intervals[priority.priority][0]" (change)="updateInterval(priority.priority, intervals[priority.priority][0], intervals[priority.priority][1])" />
+                to
+                <input type="number" [(ngModel)]="intervals[priority.priority][1]" (change)="updateInterval(priority.priority, intervals[priority.priority][0], intervals[priority.priority][1])" />
+                </div>
             </div>
-
-            <div class="grp1">
-                <div class="title">Environment Consequences</div>
-                <dx-data-grid
-                id="gridContainer"
-                keyExpr="id"
-                [allowColumnReordering]="true"
-                [allowColumnResizing]="true"
-                [columnAutoWidth]="true"
-                [dataSource]="EnvironmentDataSource"
-                [showBorders]="true"       
-                (onCellClick)="onCellClick($event)"
-                (onRowInserted)="addSeverity($event)" 
-                (onRowUpdating)="updateSeverity($event)"
-                (onRowRemoving)="deleteSeverity($event)"
-                >
-                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
-    
-                <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
-                <dxo-sorting mode="multiple"></dxo-sorting>
-                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                <dxo-paging [pageSize]="10"> </dxo-paging>
-                <dxo-pager
-                    [visible]="true"
-                    [allowedPageSizes]="[5, 10, 'all']"
-                    displayMode="full"
-                    [showPageSizeSelector]="true"
-                    [showInfo]="true"
-                    [showNavigationButtons]="true"
-                >
-                </dxo-pager>
-                <!-- <dxi-column dataField="Impact" caption="Impact Name" dataType="string" ></dxi-column> -->
-                <!-- <dxi-column dataField="Impact" caption="ImpactName" [fixed]="true">
-                    <dxo-lookup [dataSource]="impacts" displayExpr="ImpactName" valueExpr="id" >
-                    </dxo-lookup>
-                </dxi-column> -->
-                <dxi-column dataField="severity_low" caption="Low">
-                    <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id" >
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_medium" caption="Medium">
-                    <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_large" caption="Large">
-                    <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_severe" caption="Very Large">
-                    <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-    
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowAdding]="true"
-                    [allowDeleting]="true"
-                    [useIcons]="true"
-                    >
-                    <dxo-form >
-                        <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
-                        <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
-                        <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
-                        <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
-                        <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
-                    </dxo-form>
-                </dxo-editing>
-            
-                </dx-data-grid>    
+            <div class="max-header-input">
+                <label for="max-header">Max Header:</label>
+                <input id="max-header" type="number" [(ngModel)]="maxHeader" (change)="updateMaxHeader(maxHeader)" />
             </div>
-
-            <div class="grp1">
-                <div class="title">Financial Consequences</div>
-                <dx-data-grid
-                id="gridContainer"
-                keyExpr="id"
-                [allowColumnReordering]="true"
-                [allowColumnResizing]="true"
-                [columnAutoWidth]="true"
-                [dataSource]="EconomicDataSource"
-                [showBorders]="true"       
-                (onCellClick)="onCellClick($event)"
-                (onRowInserted)="addSeverity($event)" 
-                (onRowUpdating)="updateSeverity($event)"
-                (onRowRemoving)="deleteSeverity($event)"
-                >
-                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
-    
-                <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
-                <dxo-sorting mode="multiple"></dxo-sorting>
-                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                <dxo-paging [pageSize]="10"> </dxo-paging>
-                <dxo-pager
-                    [visible]="true"
-                    [allowedPageSizes]="[5, 10, 'all']"
-                    displayMode="full"
-                    [showPageSizeSelector]="true"
-                    [showInfo]="true"
-                    [showNavigationButtons]="true"
-                >
-                </dxo-pager>
-                <!-- <dxi-column dataField="Impact" caption="Impact Name" dataType="string" ></dxi-column> -->
-                <!-- <dxi-column dataField="Impact" caption="ImpactName" [fixed]="true">
-                    <dxo-lookup [dataSource]="impacts" displayExpr="ImpactName" valueExpr="id" >
-                    </dxo-lookup>
-                </dxi-column> -->
-                <dxi-column dataField="severity_low" caption="Low">
-                    <dxo-lookup [dataSource]="EconomicCons" displayExpr="ConsequenceName" valueExpr="id" >
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_medium" caption="Medium">
-                    <dxo-lookup [dataSource]="EconomicCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_large" caption="Large">
-                    <dxo-lookup [dataSource]="EconomicCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="severity_severe" caption="Very Large">
-                    <dxo-lookup [dataSource]="EconomicCons" displayExpr="ConsequenceName" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-    
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowAdding]="true"
-                    [allowDeleting]="true"
-                    [useIcons]="true"
-                    >
-                    <dxo-form >
-                        <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
-                        <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
-                        <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
-                        <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
-                        <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
-                    </dxo-form>
-                </dxo-editing>
-            
-                </dx-data-grid>    
-            </div>
-
-        </mat-tab>
-        <mat-tab label="Priority Form">
-            <dx-data-grid
-            id="gridContainer"
-            keyExpr="id"
-            [dataSource]="dataSourcePrioirity"
-            [showBorders]="true"     
-            (onRowInserted)="addPriority($event)" 
-            (onRowUpdating)="updatePriority($event)"
-            (onRowRemoving)="deletePriority($event)"       
-            >
-            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
-            <dxo-sorting mode="multiple"></dxo-sorting>
-            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-            <dxo-paging [pageSize]="10"> </dxo-paging>
-            <dxo-pager
-                [visible]="true"
-                [allowedPageSizes]="[5, 10, 'all']"
-                displayMode="full"
-                [showPageSizeSelector]="true"
-                [showInfo]="true"
-                [showNavigationButtons]="true"
-            >
-            </dxo-pager>
-            <dxi-column dataField="maxtime" caption="Max time to respond">
-                <dxo-lookup [dataSource]="maxtimerespond" displayExpr="maxtime" valueExpr="id">
-                </dxo-lookup>
-            </dxi-column>
-            <dxi-column dataField="severity_small" caption="Severity Small">
-                <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
-                </dxo-lookup>
-            </dxi-column>
-            <dxi-column dataField="severity_medium" caption="Severity Medium">
-                <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
-                </dxo-lookup>
-            </dxi-column>
-            <dxi-column dataField="severity_severe" caption="Severity Severe">
-                <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
-                </dxo-lookup>
-            </dxi-column>
-                <dxo-editing
-                    mode="row"
-                    [allowUpdating]="true"
-                    [allowAdding]="true"
-                    [allowDeleting]="true"
-                    [useIcons]="true"
-                    >
-                  
-                </dxo-editing>
-            </dx-data-grid>
-
-        </mat-tab>
-        <mat-tab label="Priority Assist">
-            <div class="import_btn">
-                <button mat-button mat-raised-button color="primary" (click)="importPriority()">Import Priority Tags</button>
-            </div>
-            <dx-popup 
-            [(visible)]="isOpenPopup"
-            [title]="'Import Priority Tags'"
-            [width]="500"
-            [height]="250"
-            [dragEnabled]="true"
-            [closeOnOutsideClick]="true">
-            <div>
-                <mat-dialog-content class="mat-typography">
-                    <div class="dx-field">
-                    <div class="dx-field-label">Import file</div>
-                    <div class="dx-field-value">
-                        <div id="fileuploader-container">
-                            <dx-file-uploader
-                            selectButtonText="Select File"
-                            labelText=""
-                            accept=".csv"
-                            uploadMode="useForm"
-                            (change)="onFileChange($event)" 
-                            >
-                            </dx-file-uploader>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="dx-field">
-                    <div class="dx-field-label">File Name</div>
-                    <div class="dx-field-value">
-                        <dx-text-box
-                        class=""
-                        [value]="fileName"
-                        [inputAttr]="{ 'aria-label': 'City' }"
+        </dx-popup>
+        
+        <div class="container">
+            <h3>Alarm Priority</h3>
+            <table class="alarm-table">
+              <thead>
+                <tr>
+                  <th>Alarm Priority</th>
+                  <th>Hazard Index No. * TTC Index No.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let priority of alarmPriorities">
+                  <td>{{ priority.priority }}</td>
+                  <td>{{ priority.range }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h3>Alarm Priority Matrix</h3>
+            <div class="matrix">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let xHeader of xHeaders">{{ xHeader }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let yHeader of yHeaders; let yIndex = index">
+                    <td>{{ yHeader }}</td>
+                    <td *ngFor="let cell of matrix[yIndex]; let xIndex = index"
+                        [ngClass]="{
+                          'priority-white': cell >= intervals['Alert'][0] && cell <= intervals['Alert'][1],
+                          'priority-alert': cell >= intervals['P3'][0] && cell <= intervals['P3'][1],
+                          'priority-p2': cell >= intervals['P2'][0] && cell <= intervals['P2'][1],
+                          'priority-p1': cell >= intervals['P1'][0] && cell <= intervals['P1'][1]
+                        }">
+                      {{ cell }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>          
+        </div>     
+    </mat-tab>
+    <mat-tab label="Method2" class="">
+        <div class="btn_grp">
+            <h2 mat-dialog-title>Priority Assist</h2>
+             <div class="">
+                 <button mat-raised-button color="primary" (click)="openImpactsDialog()">Impacts</button>        
+                 <button mat-raised-button color="primary" (click)="openConsequencesDialog()">Consequences</button>
+                 <button mat-raised-button color="primary" (click)="openCostfigDialog()">Cost figures</button>
+                 <button mat-raised-button color="primary" (click)="openRespondTimeDialog()">Respond Time</button>
+             </div>
+         </div>
+        <mat-tab-group mat-stretch-tabs="true" fitInkBarToContent animationDuration="0ms" >
+            <mat-tab label="Priority Form" class="">
+                <div class="grp-conseqs">
+                    <div class="grp1">
+                        <div class="title">Safety Consequences</div>
+                        <dx-data-grid
+                        id="gridContainer"
+                        keyExpr="id"
+                        [allowColumnReordering]="true"
+                        [allowColumnResizing]="true"
+                        [columnAutoWidth]="true"
+                        [dataSource]="safetyDataSource"
+                        [showBorders]="true"       
+                        (onCellClick)="onCellClick($event)"
+                        (onRowInserted)="addSeverity($event)" 
+                        (onRowUpdating)="updateSeverity($event)"
+                        (onRowRemoving)="deleteSeverity($event)"
                         >
-                        </dx-text-box>
+                        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            
+                        <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+                        <dxo-sorting mode="multiple"></dxo-sorting>
+                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager
+                            [visible]="true"
+                            [allowedPageSizes]="[5, 10, 'all']"
+                            displayMode="full"
+                            [showPageSizeSelector]="true"
+                            [showInfo]="true"
+                            [showNavigationButtons]="true"
+                        >
+                        </dxo-pager>
+                        <dxi-column dataField="Size" caption="Size" width="80"></dxi-column>
+                        <dxi-column dataField="ConsequenceName" caption="Consequence Name"></dxi-column>
+                       
+                        <dxo-editing
+                            mode="row"
+                            [allowUpdating]="false"
+                            [allowAdding]="false"
+                            [allowDeleting]="false"
+                            [useIcons]="true"
+                            >
+                            <dxo-form >
+                                <dxi-item dataField="Size" caption="Size" ></dxi-item>
+                                <dxi-item dataField="ConsequenceName" caption="ConsequenceName" ></dxi-item>
+                            </dxo-form>
+                        </dxo-editing>
+                    
+                        </dx-data-grid>    
                     </div>
-                    </div>
-                </mat-dialog-content>
+                    <div class="grp1">
+                        <div class="title">Environment Consequences</div>
+                        <dx-data-grid
+                        id="gridContainer"
+                        keyExpr="id"
+                        [allowColumnReordering]="true"
+                        [allowColumnResizing]="true"
+                        [columnAutoWidth]="true"
+                        [dataSource]="EnvironmentDataSource"
+                        [showBorders]="true"       
+                        (onCellClick)="onCellClick($event)"
+                        (onRowInserted)="addSeverity($event)" 
+                        (onRowUpdating)="updateSeverity($event)"
+                        (onRowRemoving)="deleteSeverity($event)"
+                        >
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
                 
-                <mat-dialog-actions>
-                    <button mat-raised-button mat-dialog-close (click)="import()" color="primary">Import</button>
-                </mat-dialog-actions>
-            </div>
-            </dx-popup>
-
-            <dx-data-grid
-            id="gridContainer"
-            [dataSource]="dataSource"
-            [showBorders]="true"
-            [columnAutoWidth]="true"
-            (onExporting)="exportGrid($event)"
-            >
-
-                <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['xlsx', 'pdf']"></dxo-export>
-                <dxo-sorting mode="multiple"></dxo-sorting>
-                (onExporting)="exportGrid($event)"
-
-                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                <dxo-paging [pageSize]="10"> </dxo-paging>
-                <dxo-pager
-                    [visible]="true"
-                    [allowedPageSizes]="[5, 10, 'all']"
-                    displayMode="full"
-                    [showPageSizeSelector]="true"
-                    [showInfo]="true"
-                    [showNavigationButtons]="true"
-                >
-                </dxo-pager>
-                <dxo-editing
-                    mode="popup"
-                    [allowUpdating]="true"
-                    [allowAdding]="true"
-                    [allowDeleting]="true"
-                    [useIcons]="true"
-                >
-                </dxo-editing>
-            </dx-data-grid>
-        </mat-tab>
-    </mat-tab-group>
+                            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                            <dxo-paging [pageSize]="10"> </dxo-paging>
+                            <dxo-pager
+                                [visible]="true"
+                                [allowedPageSizes]="[5, 10, 'all']"
+                                displayMode="full"
+                                [showPageSizeSelector]="true"
+                                [showInfo]="true"
+                                [showNavigationButtons]="true"
+                            >
+                            </dxo-pager>
+                            <dxi-column dataField="Size" caption="Size" width="80"></dxi-column>
+                            <dxi-column dataField="ConsequenceName" caption="Consequence Name"></dxi-column>
+        
+                            <!-- <dxi-column dataField="severity_low" caption="Low">
+                                <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id" >
+                                </dxo-lookup>
+                            </dxi-column>
+                            <dxi-column dataField="severity_medium" caption="Medium">
+                                <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
+                                </dxo-lookup>
+                            </dxi-column>
+                            <dxi-column dataField="severity_large" caption="Large">
+                                <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
+                                </dxo-lookup>
+                            </dxi-column>
+                            <dxi-column dataField="severity_severe" caption="Very Large">
+                                <dxo-lookup [dataSource]="EnvironmentCons" displayExpr="ConsequenceName" valueExpr="id">
+                                </dxo-lookup>
+                            </dxi-column> -->
+                            <dxo-editing
+                                mode="row"
+                                [allowUpdating]="false"
+                                [allowAdding]="false"
+                                [allowDeleting]="false"
+                                [useIcons]="true"
+                                >
+                                <!-- <dxo-form >
+                                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
+                                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
+                                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
+                                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
+                                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
+                                </dxo-form> -->
+                            </dxo-editing>
+                        </dx-data-grid>    
+                    </div>
+                    <div class="grp1">
+                        <div class="title">Financial Consequences</div>
+                        <dx-data-grid
+                        id="gridContainer"
+                        keyExpr="id"
+                        [allowColumnReordering]="true"
+                        [allowColumnResizing]="true"
+                        [columnAutoWidth]="true"
+                        [dataSource]="EconomicDataSource"
+                        [showBorders]="true"       
+                        (onCellClick)="onCellClick($event)"
+                        (onRowInserted)="addSeverity($event)" 
+                        (onRowUpdating)="updateSeverity($event)"
+                        (onRowRemoving)="deleteSeverity($event)"
+                        >
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                
+                            <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+                            <dxo-sorting mode="multiple"></dxo-sorting>
+                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                            <dxo-paging [pageSize]="10"> </dxo-paging>
+                            <dxo-pager
+                                [visible]="true"
+                                [allowedPageSizes]="[5, 10, 'all']"
+                                displayMode="full"
+                                [showPageSizeSelector]="true"
+                                [showInfo]="true"
+                                [showNavigationButtons]="true"
+                            >
+                            </dxo-pager>
+                            <dxi-column dataField="Size" caption="Size" width="80"></dxi-column>
+                            <dxi-column dataField="ConsequenceName" caption="Consequence Name"></dxi-column>
+    
+                            <dxo-editing
+                                mode="row"
+                                [allowUpdating]="false"
+                                [allowAdding]="false"
+                                [allowDeleting]="false"
+                                [useIcons]="true"
+                                >
+                                <!-- <dxo-form >
+                                    <dxi-item dataField="Impact" caption="Impact" ></dxi-item>
+                                    <dxi-item dataField="severity_low" caption="Low" ></dxi-item>
+                                    <dxi-item dataField="severity_medium" caption="Medium" ></dxi-item>
+                                    <dxi-item dataField="severity_large" caption="Large" ></dxi-item>
+                                    <dxi-item dataField="severity_severe" caption="Very Large" ></dxi-item>
+                                </dxo-form> -->
+                            </dxo-editing>
+                        </dx-data-grid>    
+                    </div>    
+                </div>
+            </mat-tab>
+            <!-- <mat-tab label="Priority Form">
+                <div class="grp1">
+                    <dx-data-grid
+                    id="gridContainer"
+                    keyExpr="id"
+                    [dataSource]="dataSourcePrioirity"
+                    [showBorders]="true"     
+                    (onRowInserted)="addPriority($event)" 
+                    (onRowUpdating)="updatePriority($event)"
+                    (onRowRemoving)="deletePriority($event)" 
+                    width="50%"
+                    class="priority-form"      
+                    >
+                        <dxo-export [enabled]="false" [allowExportSelectedData]="true"></dxo-export>
+                        <dxo-sorting mode="multiple"></dxo-sorting>
+                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager
+                            [visible]="true"
+                            [allowedPageSizes]="[5, 10, 'all']"
+                            displayMode="full"
+                            [showPageSizeSelector]="true"
+                            [showInfo]="true"
+                            [showNavigationButtons]="true"
+                        >
+                        </dxo-pager>
+                        <dxi-column dataField="maxtime" caption="Max time to respond">
+                            <dxo-lookup [dataSource]="maxtimerespond" displayExpr="maxtime" valueExpr="id">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="severity_small" caption="Severity Small">
+                            <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="severity_medium" caption="Severity Medium">
+                            <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="severity_severe" caption="Severity Severe">
+                            <dxo-lookup [dataSource]="severityLevels" displayExpr="level" valueExpr="id">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxo-editing
+                            mode="row"
+                            [allowUpdating]="true"
+                            [allowAdding]="true"
+                            [allowDeleting]="true"
+                            [useIcons]="true"
+                            >
+                        
+                        </dxo-editing>
+                    </dx-data-grid>
+                </div>
+            </mat-tab> -->
+            <mat-tab label="Priority Assist">
+                <div class="import_btn">
+                    <button mat-button mat-raised-button color="primary" (click)="importPriority()">Import Priority Tags</button>
+                </div>
+                <dx-popup 
+                [(visible)]="isOpenPopup"
+                [title]="'Import Priority Tags'"
+                [width]="500"
+                [height]="250"
+                [dragEnabled]="true"
+                [closeOnOutsideClick]="true">
+                <div>
+                    <mat-dialog-content class="mat-typography">
+                        <div class="dx-field">
+                        <div class="dx-field-label">Import file</div>
+                        <div class="dx-field-value">
+                            <div id="fileuploader-container">
+                                <dx-file-uploader
+                                selectButtonText="Select File"
+                                labelText=""
+                                accept=".csv"
+                                uploadMode="useForm"
+                                (change)="onFileChange($event)" 
+                                >
+                                </dx-file-uploader>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="dx-field">
+                        <div class="dx-field-label">File Name</div>
+                        <div class="dx-field-value">
+                            <dx-text-box
+                            class=""
+                            [value]="fileName"
+                            [inputAttr]="{ 'aria-label': 'City' }"
+                            >
+                            </dx-text-box>
+                        </div>
+                        </div>
+                    </mat-dialog-content>      
+                    <mat-dialog-actions>
+                        <button mat-raised-button mat-dialog-close (click)="import()" color="primary">Import</button>
+                    </mat-dialog-actions>
+                </div>
+                </dx-popup>
+                <div class="grp1">
+                    <dx-data-grid
+                    id="gridContainer"
+                    [dataSource]="dataSource"
+                    [showBorders]="true"
+                    [columnAutoWidth]="true"
+                    (onExporting)="exportGrid($event)"
+                    (onRowInserted)="addPriority($event)" 
+                    (onRowUpdating)="updatePriority($event)"
+                    (onRowRemoving)="deletePriority($event)"
+                    >
+                    <dxi-column dataField="plant" caption="Plant" dataType="string"></dxi-column>
+                    <dxi-column dataField="area" caption="Area" dataType="string"></dxi-column>
+                    <dxi-column dataField="unit" caption="Unit" dataType="string"></dxi-column>
+                    <dxi-column dataField="equipment" caption="Equipment" dataType="string"></dxi-column>
+                    <dxi-column dataField="taggroup" caption="Taggroup" dataType="string"></dxi-column>
+                    <dxi-column dataField="tagno" caption="Tagno" dataType="string"></dxi-column>
+                    <dxi-column dataField="parameter" caption="Parameter" dataType="string"></dxi-column>
+                    <dxi-column dataField="impact1" caption="Safety Factor PS" dataType="string">
+                        <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="impact2" caption="Environment Factor PE" dataType="string">
+                        <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="impact3" caption="Financial Factor PF" dataType="string">
+                        <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="timetorespond" caption="Time to respond" dataType="string"></dxi-column>
+                    <dxi-column dataField="derivedpriority" caption="Derived Priority" dataType="string"></dxi-column>
+                    <dxi-column dataField="accessedpriority" caption="Accessed Priority" dataType="string"></dxi-column>
+                    <dxi-column dataField="Actual Priority" caption="Actual Priority" dataType="string"></dxi-column>
+    
+                    <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['xlsx', 'pdf']"></dxo-export>
+                        <dxo-sorting mode="multiple"></dxo-sorting>
+                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager
+                            [visible]="true"
+                            [allowedPageSizes]="[5, 10, 'all']"
+                            displayMode="full"
+                            [showPageSizeSelector]="true"
+                            [showInfo]="true"
+                            [showNavigationButtons]="true"
+                        >
+                        </dxo-pager>
+                        <dxo-editing
+                            mode="popup"
+                            [allowUpdating]="true"
+                            [allowAdding]="true"
+                            [allowDeleting]="true"
+                            [useIcons]="true"
+                        >
+                        <dxo-form >
+                            <dxi-item dataField="plant" caption="Plant" dataType="string" ></dxi-item>
+                            <dxi-item dataField="area" caption="Area" dataType="string" ></dxi-item>
+                            <dxi-item dataField="unit" caption="Unit" dataType="string" ></dxi-item>
+                            <dxi-item dataField="equipment" caption="Equipment" dataType="string" ></dxi-item>
+                            <dxi-item dataField="taggroup" caption="Tag Group" dataType="string" ></dxi-item>
+                            <dxi-item dataField="tagno" caption="Tag No" dataType="string" ></dxi-item>
+                            <dxi-item dataField="parameter" caption="Parameter" dataType="string" ></dxi-item>
+                            <dxi-item dataField="impact1" caption="Safety Factor PS">
+                                <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                            </dxi-item>
+                            <dxi-item dataField="impact2" caption="Environment Factor PE">
+                                <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                            </dxi-item>
+                            <dxi-item dataField="impact3" caption="Financial Factor PF">
+                                <dxo-lookup [dataSource]="sizes"></dxo-lookup>
+                            </dxi-item>
+                            <dxi-item dataField="timetorespond" caption="Time to respond" dataType="string" ></dxi-item>
+                            <dxi-item dataField="derivedpriority" caption="Derived Priority" dataType="string" ></dxi-item>
+                            <dxi-item dataField="accessedpriority" caption="Accessed Priority" dataType="string" ></dxi-item>
+                            <dxi-item dataField="Actual Priority" caption="Actual Priority" dataType="string" ></dxi-item>
+                        </dxo-form>
+                        </dxo-editing>
+                    </dx-data-grid>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-tab>
+</mat-tab-group>

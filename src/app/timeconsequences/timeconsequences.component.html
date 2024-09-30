@@ -1,11 +1,12 @@
-<h2 mat-dialog-title>Impacts</h2>
+<h2 mat-dialog-title>Time to Consequences</h2>
 
 <dx-data-grid
 id="gridContainer"
 keyExpr="id"
 [dataSource]="dataSource"
 [showBorders]="true"
-(onRowInserted)="addImpact($event)" 
+(onRowInserting)="addImpact($event)" 
+(onRowInserted)="onRowInserted($event)" 
 (onRowUpdating)="updateImpact($event)"
 (onRowRemoving)="deleteImpact($event)"
 
@@ -23,8 +24,8 @@ keyExpr="id"
     [showNavigationButtons]="true"
 >
 </dxo-pager>
-<dxi-column dataField="ImpactName" caption="Impact Name" dataType="string" ></dxi-column>
-
+<dxi-column dataField="value" caption="Index No" dataType="number" [allowEditing]="false" sortOrder="desc" width="100"></dxi-column>
+<dxi-column dataField="ttc" caption="TTC" dataType="string" ></dxi-column>
     <dxo-editing
         mode="popup"
         [allowUpdating]="true"
@@ -33,11 +34,12 @@ keyExpr="id"
         [useIcons]="true"
         >
         <dxo-form >
-            <dxi-item dataField="ImpactName" caption="Impact Name" dataType="string" ></dxi-item>
+            <!-- <dxi-item dataField="value" caption="Index No" dataType="number" ></dxi-item> -->
+            <dxi-item dataField="ttc" caption="TTC" dataType="string" ></dxi-item>
         </dxo-form>
         <dxo-popup
-            title="Impact"
-            [showTitle]="true"
+            title="TTC"
+            [showTitle]="false"
             [width]="500"
             [height]="250"
         >

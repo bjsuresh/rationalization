@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 0px;
 }
 .grp1 {
     background-color: rgba(0, 0, 0, 0.04);
@@ -31,3 +32,79 @@
     align-items: center;
     margin: 10px 0px;
 }
+.grp-conseqs {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.grp-conseqs .grp1 {
+    width: 30%;
+}
+.priority-form {
+    margin: auto;
+}
+
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  h3 {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .matrix-table th {
+    background-color: #ffffff;
+  }
+  
+  .matrix-table td.priority-white {
+    background-color: white;
+  }
+
+  .matrix-table td.priority-alert {
+    background-color: yellow;
+  }
+  
+  .matrix-table td.priority-p2 {
+    background-color: orange;
+  }
+  
+  .matrix-table td.priority-p1 {
+    background-color: red;
+    color: white;
+  }
+  
+  .interval-inputs {
+    /* width: 600px; */
+    margin: 0 auto;
+  }
+  .max-header-input {
+    /* width: 600px; */
+    margin: 0 auto;
+  }
+  .interval-inputs .sec {
+    margin-bottom: 10px;
+  }
+  .lineargauge-sec {
+    margin-bottom: 40px;
+  }
